@@ -1,41 +1,67 @@
-**FraudShield AI**
+**FraudShield AI – Real‑Time Bank Fraud Detection**
 
-Système full-stack de détection de fraude bancaire en temps réel, combinant Machine Learning et une architecture de streaming pour identifier les transactions suspectes.
+FraudShield AI is a full‑stack system that detects fraudulent banking transactions in real time by combining a Machine Learning scoring engine with a live streaming architecture.
+This project was developed as a personal portfolio project applied to the Master MIAGE IA2 (Intelligence Artificielle Appliquée) double‑degree program.
 
-## Stack technique
+**🚀 Main Features**
 
-| Couche | Technologies |
-|---|---|
-| Frontend | Angular 22, Chart.js/ng2-charts, WebSocket |
-| Backend | Python, FastAPI, WebSocket, SQLAlchemy |
-| ML | Scikit-learn (Random Forest), imbalanced-learn (SMOTE) |
-| Base de données | PostgreSQL |
+**📊 Dashboard**
+* Live transaction feed via WebSocket
+* Fraud alerts highlighted in real time
+* Global statistics (total transactions, fraud rate, average amount)
 
-## Architecture
+**🧠 Fraud Detection Engine**
+* Real‑time scoring of every incoming transaction
+* Probability‑based fraud classification (threshold 0.5)
+* Model trained on highly imbalanced data (0.17% fraud rate)
 
-```
-frontend/    → Dashboard Angular temps réel (transactions live + alertes)
-backend/     → API FastAPI (WebSocket + REST) + service de scoring ML
-ml/          → Notebook d'entraînement du modèle (exploration, preprocessing, évaluation)
-```
+**🗄️ Transaction History**
+* Persisted transaction log with fraud scores
+* REST endpoints for historical queries and stats
 
-## Fonctionnement
+**🏗️ Architecture Overview**
 
-1. Un flux de transactions simulées est généré et envoyé via WebSocket.
-2. Chaque transaction est scorée en temps réel par un modèle Random Forest entraîné sur le dataset [Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) (284 807 transactions, 0.17% de fraudes).
-3. Le déséquilibre des classes est traité avec SMOTE (oversampling).
-4. Les transactions et leur score de fraude sont persistées en PostgreSQL et poussées au frontend en temps réel.
+FraudShield AI is split into 3 main components, each with a specific responsibility:
 
-## Modèle ML
+Component | Type | Role
+---|---|---
+Frontend | Angular | Real‑time dashboard, charts, alerts
+Backend | FastAPI | WebSocket streaming, REST API, ML inference
+ML Layer | Scikit-learn | Model training, evaluation, serialization
 
-- **Algorithme** : Random Forest (`class_weight='balanced'`, 200 arbres)
-- **Rééquilibrage** : SMOTE sur le jeu d'entraînement
-- **Métriques d'évaluation** : ROC-AUC, PR-AUC (adaptées au fort déséquilibre des classes), matrice de confusion
+**🗄️ Components – Usage Summary**
 
-## Lancer le projet
+**Frontend (Angular)**
+* WebSocket client for live transaction stream
+* Chart.js visualizations (transaction volume, fraud rate)
+* 📁 frontend/src/app
+
+**Backend (FastAPI)**
+* /ws/transactions → WebSocket endpoint streaming scored transactions
+* /api/transactions → REST endpoint for transaction history
+* /api/transactions/stats → REST endpoint for aggregate statistics
+* 📁 backend/app/routers, backend/app/services
+
+**ML Layer (Scikit-learn)**
+* Random Forest classifier (class_weight='balanced', 200 estimators)
+* SMOTE oversampling to handle class imbalance
+* Evaluation via ROC-AUC and PR-AUC (adapted to imbalanced data)
+* 📁 ml/fraud_detection_model.ipynb
+
+**🔄 Key Usage Scenario**
+
+**1️⃣ Real‑time transaction scoring**
+1. A transaction is generated (simulated stream) → Backend
+2. Features are scaled and passed to the trained model → ML service
+3. Fraud probability is computed → Backend
+4. Transaction + score is persisted → PostgreSQL
+5. Result is pushed to the client → WebSocket
+6. Dashboard updates instantly → Frontend
+
+**▶️ Run the Project**
 
 **Backend**
-```bash
+```
 cd backend
 python3 -m venv venv
 source venv/bin/activate
@@ -44,18 +70,25 @@ uvicorn app.main:app --reload --port 8000
 ```
 
 **Frontend**
-```bash
+```
 cd frontend
 npm install
 ng serve
 ```
 
-**Modèle ML**
-```bash
+**ML Model**
+```
 cd ml
+source venv/bin/activate
 jupyter notebook fraud_detection_model.ipynb
 ```
 
-## Auteur
+**🔮 Future Improvements**
+* Kafka-based real streaming pipeline (replacing simulated transactions)
+* Deep learning model comparison (autoencoders for anomaly detection)
+* Explainability layer (SHAP) for flagged transactions
+* Deployment (Docker + cloud hosting)
 
-Malak Bakhouti — 4ème année Ingénierie Informatique, EMSI Rabat
+**🎤 Conclusion**
+
+FraudShield AI demonstrates an end‑to‑end ML system applied to a real‑world problem: combining a trained classifier, a real‑time API layer, and a live dashboard to detect fraud as transactions happen, rather than after the fact.
