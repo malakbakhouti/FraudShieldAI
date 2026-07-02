@@ -1,0 +1,20 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Node / Angular
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
+
+# Modèle ML (trop lourd pour Git)
+ml/*.joblib
+backend/app/models/*.joblib
+
+# Env
+.env
+
+# OS
+.DS_Store
