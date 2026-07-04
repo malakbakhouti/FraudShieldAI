@@ -1,0 +1,39 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1>Alerts</h1>
+      <p class="subtitle">{{ alerts().length }} fraud transactions flagged for review</p>
+    </div>
+    <button class="btn" (click)="load()">Refresh</button>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Loading alerts...</div>
+
+  <div *ngIf="!loading() && alerts().length === 0" class="empty">
+    No fraud alerts. Everything looks clean.
+  </div>
+
+  <div class="alerts-list" *ngIf="!loading()">
+    <div class="alert-card" *ngFor="let tx of alerts()" [class.reviewed]="isReviewed(tx.id)">
+      <div class="alert-card__icon">!</div>
+
+      <div class="alert-card__body">
+        <div class="alert-card__top">
+          <span class="alert-card__title">Transaction #{{ tx.id }}</span>
+          <span class="alert-card__amount">{{ tx.amount | number:'1.2-2' }} €</span>
+        </div>
+        <div class="alert-card__meta">
+          Risk score {{ (tx.fraud_probability * 100) | number:'1.0-0' }}%
+          · {{ tx.created_at | date:'dd/MM/yy HH:mm:ss' }}
+        </div>
+      </div>
+
+      <div class="alert-card__actions">
+        <span *ngIf="isReviewed(tx.id)" class="reviewed-badge">Reviewed</span>
+        <button *ngIf="!isReviewed(tx.id)" class="btn btn--outline" (click)="markReviewed(tx.id)">
+          Mark as Reviewed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

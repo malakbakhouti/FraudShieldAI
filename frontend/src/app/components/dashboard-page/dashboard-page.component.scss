@@ -1,0 +1,126 @@
+:host {
+  --text: #1a1a2e;
+  --text-dim: #6b6b80;
+  --coral: #e8607a;
+  --coral-light: #fce8ec;
+  --teal: #1d9e75;
+  --teal-light: #e1f5ee;
+  --amber: #ba7517;
+  --amber-light: #faeeda;
+  --panel-border: #eeece7;
+
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.dashboard__range {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__label {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  &__value {
+    font-size: 26px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 12px;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  td {
+    padding: 10px 6px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.row--fraud {
+  background: var(--coral-light);
+}
+
+.risk {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+
+  &--high { background: var(--coral-light); color: var(--coral); }
+  &--low { background: var(--teal-light); color: var(--teal); }
+}
+
+.status {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 12px;
+
+  &--blocked { background: var(--coral-light); color: var(--coral); }
+  &--approved { background: var(--teal-light); color: var(--teal); }
+}

@@ -1,0 +1,130 @@
+:host {
+  --text: #1a1a2e;
+  --text-dim: #6b6b80;
+  --coral: #e8607a;
+  --coral-light: #fce8ec;
+  --teal: #1d9e75;
+  --teal-light: #e1f5ee;
+  --panel-border: #eeece7;
+
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+}
+
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.btn {
+  background: var(--coral);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover { opacity: 0.9; }
+
+  &--outline {
+    background: transparent;
+    color: var(--coral);
+    border: 1px solid var(--coral-light);
+  }
+}
+
+.loading, .empty {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 60px 0;
+  font-size: 14px;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alert-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border: 1px solid var(--coral-light);
+  border-radius: 14px;
+  padding: 16px 20px;
+
+  &.reviewed {
+    opacity: 0.55;
+    border-color: var(--panel-border);
+  }
+
+  &__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--coral-light);
+    color: var(--coral);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  &__amount {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  &__meta {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+  }
+}
+
+.reviewed-badge {
+  font-size: 12px;
+  color: var(--teal);
+  background: var(--teal-light);
+  padding: 4px 12px;
+  border-radius: 12px;
+}

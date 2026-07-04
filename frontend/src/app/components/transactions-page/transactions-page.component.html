@@ -1,0 +1,57 @@
+<div class="page">
+  <div class="page__header">
+    <h1>Transactions</h1>
+    <button class="btn" (click)="load()">Refresh</button>
+  </div>
+
+  <div class="filters">
+    <button class="filter" [class.active]="statusFilter() === 'all'" (click)="setFilter('all')">
+      All ({{ transactions().length }})
+    </button>
+    <button class="filter" [class.active]="statusFilter() === 'fraud'" (click)="setFilter('fraud')">
+      Fraud
+    </button>
+    <button class="filter" [class.active]="statusFilter() === 'normal'" (click)="setFilter('normal')">
+      Normal
+    </button>
+  </div>
+
+  <div class="panel">
+    <div *ngIf="loading()" class="loading">Loading transactions...</div>
+
+    <table class="table" *ngIf="!loading()">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Amount</th>
+          <th>Risk Score</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of filtered" [class.row--fraud]="tx.is_fraud">
+          <td>#{{ tx.id }}</td>
+          <td>{{ tx.amount | number:'1.2-2' }} €</td>
+          <td>
+            <span class="risk" [class.risk--high]="tx.fraud_probability > 0.5"
+                                [class.risk--low]="tx.fraud_probability <= 0.5">
+              {{ (tx.fraud_probability * 100) | number:'1.0-0' }}
+            </span>
+          </td>
+          <td>
+            <span class="status" [class.status--blocked]="tx.is_fraud"
+                                  [class.status--approved]="!tx.is_fraud">
+              {{ tx.is_fraud ? 'Blocked' : 'Approved' }}
+            </span>
+          </td>
+          <td>{{ tx.created_at | date:'dd/MM/yy HH:mm:ss' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading() && filtered.length === 0" class="empty">
+      No transactions match this filter.
+    </div>
+  </div>
+</div>
