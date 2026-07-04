@@ -1,0 +1,141 @@
+:host {
+  --bg: #0b1220;
+  --panel: #131b2e;
+  --panel-border: #232d45;
+  --text: #e6e8ec;
+  --text-dim: #8b93a7;
+  --accent: #2f6fed;
+  --fraud: #e5484d;
+  --fraud-bg: rgba(229, 72, 77, 0.12);
+
+  display: block;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 32px 40px;
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+}
+
+.status {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+
+  &--live {
+    color: #3ddc84;
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stats__card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &--alert {
+    border-color: rgba(229, 72, 77, 0.35);
+  }
+}
+
+.stats__label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stats__value {
+  font-family: 'IBM Plex Mono', 'SF Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.feed h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+}
+
+.feed__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  overflow: hidden;
+
+  th, td {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  th {
+    color: var(--text-dim);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.feed__row--fraud {
+  background: var(--fraud-bg);
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(61, 220, 132, 0.14);
+  color: #3ddc84;
+
+  &--fraud {
+    background: rgba(229, 72, 77, 0.16);
+    color: var(--fraud);
+  }
+}

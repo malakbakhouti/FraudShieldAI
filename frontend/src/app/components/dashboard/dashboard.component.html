@@ -1,0 +1,56 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1>FraudShield AI</h1>
+    <span class="status" [class.status--live]="txService.connected()">
+      {{ txService.connected() ? '● Live' : '○ Déconnecté' }}
+    </span>
+  </header>
+
+  <section class="stats" *ngIf="txService.stats() as stats">
+    <div class="stats__card">
+      <span class="stats__label">Transactions</span>
+      <span class="stats__value">{{ stats.total_transactions }}</span>
+    </div>
+    <div class="stats__card stats__card--alert">
+      <span class="stats__label">Fraudes détectées</span>
+      <span class="stats__value">{{ stats.total_frauds }}</span>
+    </div>
+    <div class="stats__card">
+      <span class="stats__label">Taux de fraude</span>
+      <span class="stats__value">{{ stats.fraud_rate | number:'1.2-2' }}%</span>
+    </div>
+    <div class="stats__card">
+      <span class="stats__label">Montant moyen</span>
+      <span class="stats__value">{{ stats.avg_amount | number:'1.2-2' }} €</span>
+    </div>
+  </section>
+
+  <section class="feed">
+    <h2>Transactions en direct</h2>
+    <table class="feed__table">
+      <thead>
+        <tr>
+          <th>Heure</th>
+          <th>ID</th>
+          <th>Montant</th>
+          <th>Score fraude</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of txService.transactions()"
+            [class.feed__row--fraud]="tx.is_fraud">
+          <td>{{ formatTime(tx.created_at) }}</td>
+          <td>#{{ tx.id }}</td>
+          <td>{{ tx.amount | number:'1.2-2' }} €</td>
+          <td>{{ (tx.fraud_probability * 100) | number:'1.1-1' }}%</td>
+          <td>
+            <span class="badge" [class.badge--fraud]="tx.is_fraud">
+              {{ tx.is_fraud ? 'Fraude' : 'Normal' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
