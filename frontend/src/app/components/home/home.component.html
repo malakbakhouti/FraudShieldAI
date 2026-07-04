@@ -1,7 +1,11 @@
 <div class="home">
+  <div class="decor decor--1"></div>
+  <div class="decor decor--2"></div>
+  <div class="decor decor--3"></div>
+
   <nav class="nav">
     <div class="nav__brand">
-      <img src="assets/logo.png" alt="FraudShield AI" class="nav__logo" />
+      <span class="nav__mark"></span>
       <span>FraudShield <strong>AI</strong></span>
     </div>
     <div class="nav__links">
@@ -9,73 +13,103 @@
       <a>Features</a>
       <a>How it works</a>
       <a>Pricing</a>
-      <a>Resources</a>
     </div>
     <div class="nav__actions">
-      <a class="nav__login">Log in</a>
-      <a routerLink="/app/dashboard" class="nav__cta">Get Started</a>
+      <a routerLink="/login" class="nav__login">Log in</a>
+      <a routerLink="/login" class="nav__cta">Get Started</a>
     </div>
   </nav>
 
   <header class="hero">
-    <div class="hero__decor">
-      <span class="decor-blob decor-blob--yellow"></span>
-      <span class="decor-blob decor-blob--blue"></span>
-      <span class="decor-blob decor-blob--purple"></span>
-      <span class="decor-blob decor-blob--pink"></span>
-    </div>
     <div class="hero__text">
       <span class="hero__eyebrow">AI-Powered Fraud Detection</span>
       <h1>
-        Stop <span class="hero__accent">fraud.</span><br />
-        Protect every <span class="hero__accent-2">transaction.</span>
+        Stop <span class="accent-pink">fraud.</span><br />
+        Protect every <span class="accent-blue">transaction.</span>
       </h1>
       <p>
         FraudShield AI analyzes every credit card transaction in real-time to detect
         fraud in milliseconds — blocking threats without blocking your customers.
       </p>
       <div class="hero__buttons">
-        <a routerLink="/app/dashboard" class="hero__button">Request a Demo</a>
-        <a routerLink="/app/dashboard" class="hero__button hero__button--outline">See How It Works</a>
-      </div>
-      <div class="hero__trust">
-        <div class="hero__avatars">
-          <span class="avatar avatar--1"></span>
-          <span class="avatar avatar--2"></span>
-          <span class="avatar avatar--3"></span>
-        </div>
-        <p>Trusted by 2,000+ financial institutions<br />to secure millions of transactions daily.</p>
+        <a routerLink="/login" class="btn btn--primary">Request a Demo</a>
+        <a routerLink="/login" class="btn btn--outline">See How It Works</a>
       </div>
     </div>
 
     <div class="hero__panel">
-      <img src="assets/img2.png" alt="Live Detection panel" class="hero__panel-img" />
+      <div class="panel__header">
+        <span>Live Detection</span>
+        <span class="panel__live">Real-time</span>
+      </div>
+
+      <div class="panel__stats">
+        <div class="panel__stat panel__stat--blue">
+          <span class="panel__label">Transactions Analyzed</span>
+          <span class="panel__value">24,875</span>
+        </div>
+        <div class="panel__stat panel__stat--pink">
+          <span class="panel__label">Fraudulent Transactions</span>
+          <span class="panel__value">312</span>
+        </div>
+        <div class="panel__stat panel__stat--orange">
+          <span class="panel__label">Risk Blocked</span>
+          <span class="panel__value">$128,430</span>
+        </div>
+      </div>
+
+      <div class="panel__table-title">Recent Transactions</div>
+      <table class="panel__table">
+        <thead>
+          <tr><th>Transaction</th><th>Amount</th><th>Risk</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>•••• 4532</td>
+            <td>$1,250.00</td>
+            <td><span class="risk risk--high">92</span></td>
+            <td><span class="status status--blocked">Blocked</span></td>
+          </tr>
+          <tr>
+            <td>•••• 9821</td>
+            <td>$89.90</td>
+            <td><span class="risk risk--medium">45</span></td>
+            <td><span class="status status--review">Review</span></td>
+          </tr>
+          <tr>
+            <td>•••• 7710</td>
+            <td>$45.50</td>
+            <td><span class="risk risk--low">12</span></td>
+            <td><span class="status status--approved">Approved</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </header>
 
   <section class="features">
     <div class="feature">
-      <img src="assets/logo1.png" class="feature__icon" alt="" />
+      <span class="feature__icon feature__icon--pink"></span>
       <h3>Real-time Detection</h3>
       <p>Analyze transactions in milliseconds.</p>
     </div>
     <div class="feature">
-      <img src="assets/logo2.png" class="feature__icon" alt="" />
+      <span class="feature__icon feature__icon--green"></span>
       <h3>AI & Machine Learning</h3>
       <p>Advanced models that learn and adapt continuously.</p>
     </div>
     <div class="feature">
-      <img src="assets/logo3.png" class="feature__icon" alt="" />
+      <span class="feature__icon feature__icon--yellow"></span>
       <h3>Reduce Chargebacks</h3>
       <p>Block fraud before it happens and save costs.</p>
     </div>
     <div class="feature">
-      <img src="assets/logo4.png" class="feature__icon" alt="" />
+      <span class="feature__icon feature__icon--blue"></span>
       <h3>Powerful Analytics</h3>
       <p>Gain insights and monitor fraud trends.</p>
     </div>
     <div class="feature">
-      <img src="assets/logo5.png" class="feature__icon" alt="" />
+      <span class="feature__icon feature__icon--purple"></span>
       <h3>Seamless Experience</h3>
       <p>Protects without friction for legitimate customers.</p>
     </div>
@@ -84,54 +118,57 @@
   <section class="how">
     <div class="how__text">
       <span class="how__eyebrow">How it works</span>
-      <h2>Intelligent protection in <span class="hero__accent">3 simple steps</span></h2>
+      <h2>Intelligent protection in <span class="accent-pink">3 simple steps</span></h2>
 
       <div class="step">
-        <img src="assets/logo6.png" class="step__icon" alt="" />
+        <span class="step__number step__number--pink">1</span>
         <div>
-          <h4>1. Transaction Received</h4>
+          <h4>Transaction Received</h4>
           <p>Every transaction is captured in real-time from any channel.</p>
         </div>
       </div>
       <div class="step">
-        <img src="assets/logo2.png" class="step__icon" alt="" />
+        <span class="step__number step__number--green">2</span>
         <div>
-          <h4>2. AI Analysis</h4>
+          <h4>AI Analysis</h4>
           <p>Our AI evaluates hundreds of signals to calculate the risk score in milliseconds.</p>
         </div>
       </div>
       <div class="step">
-        <img src="assets/logo7.png" class="step__icon" alt="" />
+        <span class="step__number step__number--blue">3</span>
         <div>
-          <h4>3. Smart Decision</h4>
+          <h4>Smart Decision</h4>
           <p>Approve legitimate transactions, review suspicious ones, and block fraudulent attempts instantly.</p>
         </div>
       </div>
-
-      <a routerLink="/app/dashboard" class="how__link">Learn More →</a>
     </div>
 
-    <div class="dashboard-mock">
-      <img src="assets/img1.png" alt="Dashboard preview" class="dashboard-mock__img" />
+    <div class="how__stats">
+      <div class="stat-block stat-block--pink">
+        <span class="stat-block__value">1.25M</span>
+        <span class="stat-block__label">Transactions processed</span>
+      </div>
+      <div class="stat-block stat-block--blue">
+        <span class="stat-block__value">99.8%</span>
+        <span class="stat-block__label">Detection accuracy</span>
+      </div>
+      <div class="stat-block stat-block--yellow">
+        <span class="stat-block__value">0.18%</span>
+        <span class="stat-block__label">False positive rate</span>
+      </div>
+      <div class="stat-block stat-block--green">
+        <span class="stat-block__value">&lt;100ms</span>
+        <span class="stat-block__label">Average response time</span>
+      </div>
     </div>
   </section>
 
   <section class="trusted">
-    <div class="trusted__decor">
-      <span class="decor-blob decor-blob--pink-1"></span>
-      <span class="decor-blob decor-blob--yellow-2"></span>
-      <span class="decor-blob decor-blob--green-3"></span>
-      <span class="decor-blob decor-blob--blue-4"></span>
-      <span class="decor-blob decor-blob--purple-5"></span>
-    </div>
-    <p>Trusted by leading banks and fintechs worldwide</p>
-    <div class="trusted__logos">
-      <span class="logo-box"><img src="assets/logo8.png" alt="Chase" /></span>
-      <span class="logo-box"><img src="assets/logo9.png" alt="Barclays" /></span>
-      <span class="logo-box"><img src="assets/logo10.png" alt="N26" /></span>
-      <span class="logo-box"><img src="assets/logo11.png" alt="Revolut" /></span>
-      <span class="logo-box"><img src="assets/logo12.png" alt="PayPal" /></span>
-      <span class="logo-box"><img src="assets/logo13.png" alt="BBVA" /></span>
+    <p>Trusted by financial institutions worldwide</p>
+    <div class="trusted__badges">
+      <span class="trusted__badge trusted__badge--pink">2,000+ Banks</span>
+      <span class="trusted__badge trusted__badge--blue">50+ Countries</span>
+      <span class="trusted__badge trusted__badge--yellow">$2B+ Protected</span>
     </div>
   </section>
 </div>

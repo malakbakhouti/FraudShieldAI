@@ -1,0 +1,213 @@
+:host {
+  --text: #2a2438;
+  --text-dim: #756f85;
+  --pink: #ffcbe1;
+  --pink-text: #b3567e;
+  --blue: #bcd8ec;
+  --blue-text: #3a6f96;
+  --panel-border: #f0e9e4;
+
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+}
+
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.btn {
+  background: var(--pink-text);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover { opacity: 0.9; }
+
+  &--outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+  }
+}
+
+.error {
+  color: var(--pink-text);
+  font-size: 13px;
+  background: var(--pink);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 60px 0;
+  font-size: 14px;
+}
+
+.form-panel {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  input, select {
+    padding: 9px 12px;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: var(--pink-text);
+    }
+
+    &:disabled {
+      background: #f5f1ec;
+      color: var(--text-dim);
+    }
+  }
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  td {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: #d6e5bd;
+  color: #5a7a3a;
+
+  &--admin {
+    background: var(--blue);
+    color: var(--blue-text);
+  }
+}
+
+.table__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-pill {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  background: transparent;
+
+  &--edit {
+    border: 1.5px solid var(--blue-text);
+    color: var(--blue-text);
+
+    &:hover { background: var(--blue); }
+  }
+
+  &--delete {
+    border: 1.5px solid var(--pink-text);
+    color: var(--pink-text);
+
+    &:hover { background: var(--pink); }
+  }
+}
+
+.field__hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.table__self-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-style: italic;
+}

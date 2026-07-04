@@ -1,0 +1,97 @@
+<div class="page">
+  <div class="page__header">
+    <h1>Settings</h1>
+    <p class="subtitle">Manage your account and notification preferences</p>
+  </div>
+
+  <div class="panel" *ngIf="auth.currentUser() as user">
+    <div class="panel__title">Profile</div>
+    <div class="detail-row">
+      <span>Full name</span>
+      <span>{{ user.full_name || '—' }}</span>
+    </div>
+    <div class="detail-row">
+      <span>Email</span>
+      <span>{{ user.email }}</span>
+    </div>
+    <div class="detail-row">
+      <span>Role</span>
+      <span class="role-badge" [class.role-badge--admin]="user.role === 'admin'">
+        {{ user.role === 'admin' ? 'Admin' : 'Fraud Analyst' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__title">Change Password</div>
+
+    <p class="success" *ngIf="passwordSuccess()">{{ passwordSuccess() }}</p>
+    <p class="error" *ngIf="passwordError()">{{ passwordError() }}</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Current password</label>
+        <input type="password" [(ngModel)]="currentPassword" placeholder="••••••••" />
+      </div>
+      <div class="field">
+        <label>New password</label>
+        <input type="password" [(ngModel)]="newPassword" placeholder="••••••••" />
+      </div>
+      <div class="field">
+        <label>Confirm new password</label>
+        <input type="password" [(ngModel)]="confirmPassword" placeholder="••••••••" />
+      </div>
+    </div>
+
+    <button class="btn" (click)="submitPasswordChange()">Update Password</button>
+  </div>
+
+  <div class="panel">
+    <div class="panel__title">Alert Threshold</div>
+    <p class="panel__subtitle">
+      Transactions with a fraud probability above this threshold will be flagged as alerts.
+    </p>
+
+    <div class="threshold-row">
+      <input type="range" min="0" max="100" [(ngModel)]="alertThreshold" />
+      <span class="threshold-value">{{ alertThreshold }}%</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__title">Notification Preferences</div>
+
+    <div class="toggle-row">
+      <div>
+        <span class="toggle-row__label">Email notifications</span>
+        <span class="toggle-row__desc">Receive an email when a new alert is created.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="notifyEmail" />
+        <span class="switch__slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <span class="toggle-row__label">High-risk alerts only</span>
+        <span class="toggle-row__desc">Only notify for transactions above the alert threshold.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="notifyHighRiskOnly" />
+        <span class="switch__slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <span class="toggle-row__label">Daily summary</span>
+        <span class="toggle-row__desc">Receive a daily digest of fraud activity.</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="notifyDailySummary" />
+        <span class="switch__slider"></span>
+      </label>
+    </div>
+  </div>
+</div>

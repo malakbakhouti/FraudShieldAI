@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Transaction, TransactionStats } from '../models/transaction.model';
+import { Transaction, TransactionStats, TransactionDetail } from '../models/transaction.model';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
@@ -39,5 +39,20 @@ export class TransactionService {
 
   loadHistory(limit = 50) {
     return this.http.get<Transaction[]>(`${this.apiUrl}/?limit=${limit}`);
+  }
+
+  getDetail(id: number) {
+    return this.http.get<TransactionDetail>(`${this.apiUrl}/${id}`);
+  }
+
+  importCsv(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{
+      total_imported: number;
+      frauds_detected: number;
+      errors: number;
+      fraud_rate: number;
+    }>('http://localhost:8000/api/import/csv', formData);
   }
 }

@@ -30,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let tx of filtered" [class.row--fraud]="tx.is_fraud">
+        <tr *ngFor="let tx of filtered" [class.row--fraud]="tx.is_fraud" [routerLink]="['/app/transactions', tx.id]" style="cursor: pointer;">
           <td>#{{ tx.id }}</td>
           <td>{{ tx.amount | number:'1.2-2' }} €</td>
           <td>

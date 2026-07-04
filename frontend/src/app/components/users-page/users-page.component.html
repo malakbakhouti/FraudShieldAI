@@ -1,0 +1,74 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1>User Management</h1>
+      <p class="subtitle">Create, edit, and manage user accounts and roles</p>
+    </div>
+    <button class="btn" (click)="openCreateForm()">Create User</button>
+  </div>
+
+  <p class="error" *ngIf="error()">{{ error() }}</p>
+
+  <div class="form-panel" *ngIf="showForm()">
+    <div class="form-panel__title">{{ editingId() === null ? 'Create New User' : 'Edit User' }}</div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" [(ngModel)]="formFullName" placeholder="Jane Doe" />
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="formEmail" placeholder="jane@fraudshield.ai"
+               [disabled]="editingId() !== null" />
+      </div>
+
+      <div class="field" *ngIf="editingId() === null">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="formPassword" placeholder="••••••••" />
+      </div>
+
+      <div class="field">
+        <label>Role</label>
+        <select [(ngModel)]="formRole" [disabled]="isEditingSelf()">
+          <option value="analyst">Fraud Analyst</option>
+          <option value="admin">Admin</option>
+        </select>
+        <span class="field__hint" *ngIf="isEditingSelf()">You cannot change your own role.</span>
+      </div>
+    </div>
+
+    <div class="form-panel__actions">
+      <button class="btn" (click)="submitForm()">{{ editingId() === null ? 'Create' : 'Save Changes' }}</button>
+      <button class="btn btn--outline" (click)="cancelForm()">Cancel</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Loading users...</div>
+
+  <div class="panel" *ngIf="!loading()">
+    <table class="table">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users()">
+          <td>{{ user.full_name || '—' }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [class.role-badge--admin]="user.role === 'admin'">
+              {{ user.role === 'admin' ? 'Admin' : 'Fraud Analyst' }}
+            </span>
+          </td>
+          <td class="table__actions">
+            <ng-container *ngIf="user.email !== auth.currentUser()?.email">
+              <button class="btn-pill btn-pill--edit" (click)="openEditForm(user)">Edit</button>
+              <button class="btn-pill btn-pill--delete" (click)="deleteUser(user)">Delete</button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

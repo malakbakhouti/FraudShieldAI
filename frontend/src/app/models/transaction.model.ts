@@ -6,6 +6,10 @@ export interface Transaction {
   created_at: string;
 }
 
+export interface TransactionDetail extends Transaction {
+  features: Record<string, number>;
+}
+
 export interface TransactionStats {
   total_transactions: number;
   total_frauds: number;

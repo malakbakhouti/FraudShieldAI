@@ -1,0 +1,71 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1>Reports</h1>
+      <p class="subtitle">Fraud detection performance and transaction statistics</p>
+    </div>
+    <button class="btn" (click)="exportCsv()">Export CSV</button>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Loading report data...</div>
+
+  <ng-container *ngIf="!loading()">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-card__label">Total Transactions</span>
+        <span class="metric-card__value">{{ totalTransactions }}</span>
+      </div>
+      <div class="metric-card metric-card--alert">
+        <span class="metric-card__label">Fraud Detected</span>
+        <span class="metric-card__value">{{ totalFraud }}</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-card__label">Detection Rate</span>
+        <span class="metric-card__value">{{ detectionRate | number:'1.2-2' }}%</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-card__label">Average Amount</span>
+        <span class="metric-card__value">{{ avgAmount | number:'1.2-2' }} €</span>
+      </div>
+    </div>
+
+    <div class="panel panel--full">
+      <div class="panel__title">Transactions Per Day</div>
+      <p class="panel__subtitle">Volume and fraud evolution over the last recorded days.</p>
+
+      <div class="chart">
+        <div class="chart__bar-group" *ngFor="let day of dayStats()">
+          <div class="chart__bars">
+            <div class="chart__bar chart__bar--total"
+                 [style.height.%]="(day.total / maxDayTotal()) * 100"></div>
+            <div class="chart__bar chart__bar--fraud"
+                 [style.height.%]="(day.fraud / maxDayTotal()) * 100"></div>
+          </div>
+          <span class="chart__label">{{ day.label }}</span>
+        </div>
+      </div>
+
+      <div class="chart-legend">
+        <span><i class="dot dot--total"></i>Total transactions</span>
+        <span><i class="dot dot--fraud"></i>Fraud detected</span>
+      </div>
+    </div>
+
+    <div class="panel panel--full">
+      <div class="panel__title">Monthly Summary</div>
+      <table class="summary-table">
+        <thead>
+          <tr><th>Day</th><th>Total</th><th>Fraud</th><th>Fraud Rate</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let day of dayStats()">
+            <td>{{ day.label }}</td>
+            <td>{{ day.total }}</td>
+            <td>{{ day.fraud }}</td>
+            <td>{{ day.total ? (day.fraud / day.total * 100 | number:'1.1-1') : '0.0' }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

@@ -1,11 +1,11 @@
 :host {
   --text: #1a1a2e;
   --text-dim: #6b6b80;
-  --coral: #e8607a;
-  --coral-light: #fce8ec;
-  --teal: #1d9e75;
-  --teal-light: #e1f5ee;
-  --panel-border: #eeece7;
+  --coral: #d97fa0;
+  --coral-light: #ffcbe1;
+  --teal: #6a8f4a;
+  --teal-light: #d6e5bd;
+  --panel-border: #f0e9e4;
 
   display: block;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -127,4 +127,61 @@
   background: var(--teal-light);
   padding: 4px 12px;
   border-radius: 12px;
+}
+
+.alert-card--closed {
+  opacity: 0.55;
+}
+
+.alert-card__icon--legitimate {
+  background: var(--teal-light);
+  color: var(--teal);
+}
+
+.alert-card__icon--confirmed {
+  background: var(--coral-light);
+  color: var(--coral);
+}
+
+.status-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+
+  &--pending {
+    background: #faeeda;
+    color: #ba7517;
+  }
+
+  &--legitimate {
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  &--confirmed {
+    background: var(--coral-light);
+    color: var(--coral);
+  }
+
+  &--closed {
+    background: #f0e9e4;
+    color: var(--text-dim);
+  }
+}
+
+.alert-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn--danger {
+  background: var(--coral);
+  color: white;
+  border: none;
+
+  &:hover { opacity: 0.9; }
 }

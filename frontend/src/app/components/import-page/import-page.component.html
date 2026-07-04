@@ -1,0 +1,69 @@
+<div class="page">
+  <div class="page__header">
+    <h1>Import Transactions</h1>
+    <p class="subtitle">Upload a CSV file to score real transactions through the fraud model.</p>
+  </div>
+
+  <div class="panel" *ngIf="!result()">
+    <div class="dropzone"
+         [class.dropzone--active]="dragging()"
+         [class.dropzone--filled]="selectedFile()"
+         (drop)="onDrop($event)"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave()">
+
+      <ng-container *ngIf="!selectedFile()">
+        <p class="dropzone__title">Drag & drop your CSV here</p>
+        <p class="dropzone__subtitle">or</p>
+        <label class="btn btn--outline">
+          Browse files
+          <input type="file" accept=".csv" (change)="onFileSelected($event)" hidden />
+        </label>
+        <p class="dropzone__hint">
+          Expected columns: Time, Amount, V1–V28 (optional, defaults to 0 if missing)
+        </p>
+      </ng-container>
+
+      <ng-container *ngIf="selectedFile() as file">
+        <p class="dropzone__filename">{{ file.name }}</p>
+        <p class="dropzone__filesize">{{ (file.size / 1024) | number:'1.0-1' }} KB</p>
+        <div class="dropzone__actions">
+          <button class="btn" (click)="upload()" [disabled]="uploading()">
+            {{ uploading() ? 'Processing...' : 'Import & Score' }}
+          </button>
+          <button class="btn btn--outline" (click)="reset()" [disabled]="uploading()">
+            Cancel
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </div>
+
+  <div class="result" *ngIf="result() as res">
+    <div class="result__icon"></div>
+    <h2>Import complete</h2>
+
+    <div class="result__stats">
+      <div class="result-stat">
+        <span class="result-stat__label">Imported</span>
+        <span class="result-stat__value">{{ res.total_imported }}</span>
+      </div>
+      <div class="result-stat result-stat--alert">
+        <span class="result-stat__label">Fraud detected</span>
+        <span class="result-stat__value">{{ res.frauds_detected }}</span>
+      </div>
+      <div class="result-stat">
+        <span class="result-stat__label">Fraud rate</span>
+        <span class="result-stat__value">{{ res.fraud_rate }}%</span>
+      </div>
+      <div class="result-stat" *ngIf="res.errors > 0">
+        <span class="result-stat__label">Skipped rows</span>
+        <span class="result-stat__value">{{ res.errors }}</span>
+      </div>
+    </div>
+
+    <button class="btn" (click)="reset()">Import another file</button>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-shell',
@@ -10,13 +11,15 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrl: './shell.component.scss'
 })
 export class ShellComponent {
+  constructor(public auth: AuthService) {}
+
   navItems = [
-    { label: 'Dashboard', path: '/app/dashboard' },
-    { label: 'Transactions', path: '/app/transactions' },
-    { label: 'Alerts', path: '/app/alerts' },
-    { label: 'Models', path: '/app/models' },
-    { label: 'Rules', path: '/app/rules' },
-    { label: 'Reports', path: '/app/reports' },
-    { label: 'Settings', path: '/app/settings' },
+    { label: 'Dashboard', path: '/app/dashboard', adminOnly: false },
+    { label: 'Transactions', path: '/app/transactions', adminOnly: false },
+    { label: 'Alerts', path: '/app/alerts', adminOnly: false },
+    { label: 'Reports', path: '/app/reports', adminOnly: false },
+    { label: 'Users', path: '/app/users', adminOnly: true },
+    { label: 'Models', path: '/app/models', adminOnly: true },
+    { label: 'Settings', path: '/app/settings', adminOnly: false },
   ];
 }

@@ -1,0 +1,515 @@
+:host {
+  --text: #2a2438;
+  --text-dim: #756f85;
+  --pink: #ffcbe1;
+  --pink-text: #b3567e;
+  --green: #d6e5bd;
+  --green-text: #5a7a3a;
+  --blue: #bcd8ec;
+  --blue-text: #3a6f96;
+  --panel-border: #f0e9e4;
+
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+}
+
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.status-badge {
+  background: var(--green);
+  color: var(--green-text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  &__value {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+
+  &__title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--panel-border);
+
+  span:first-child { color: var(--text-dim); }
+  span:last-child { font-weight: 500; text-align: right; }
+
+  &:last-child { border-bottom: none; }
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  margin-bottom: 12px;
+
+  &__bar {
+    background: #f5f1ec;
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    background: var(--blue-text);
+    height: 100%;
+    border-radius: 6px;
+  }
+
+  &__value {
+    text-align: right;
+    color: var(--text-dim);
+  }
+}
+
+.note {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 0;
+}
+
+.metrics-note {
+  font-size: 13px;
+  color: var(--text-dim);
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.panel--full {
+  margin-bottom: 16px;
+}
+
+
+
+.panel__intro {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  &__row--selected {
+    background: var(--green);
+  }
+}
+
+.model-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: #f0e9e4;
+  color: var(--text-dim);
+
+  &--selected {
+    background: var(--green-text);
+    color: white;
+  }
+}
+
+.reasons-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--blue-text);
+  line-height: 1.9;
+}
+
+.feature-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-border);
+  line-height: 1.5;
+}
+
+/* ---- Panel icons ---- */
+.panel__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  flex-shrink: 0;
+
+  &--pink { background: var(--pink); }
+  &--blue { background: var(--blue); }
+  &--green { background: var(--green); }
+  &--yellow { background: #f9e1a8; }
+}
+
+/* ---- Why Random Forest — reason cards grid ---- */
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reason-card {
+  background: #faf9f7;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+
+    &--pink { background: var(--pink); }
+    &--blue { background: var(--blue); }
+    &--green { background: var(--green); }
+    &--yellow { background: #f9e1a8; }
+    &--purple { background: #dcccec; }
+    &--orange { background: #ffdab4; }
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+}
+
+/* ---- Training / Detection flow diagrams ---- */
+.flow-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.flow-card {
+  width: 100%;
+  background: #faf9f7;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(180, 150, 170, 0.06);
+
+  &--blue { background: var(--blue); border-color: var(--blue); }
+  &--normal { background: var(--green); border-color: var(--green); color: var(--green-text); font-weight: 600; }
+  &--fraud { background: var(--pink); border-color: var(--pink); color: var(--pink-text); font-weight: 600; }
+}
+
+.flow-arrow {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1;
+}
+
+.flow-branches {
+  width: 100%;
+  height: 18px;
+  position: relative;
+}
+
+.flow-branch-line {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  border-bottom: 1px solid var(--panel-border);
+
+  &--left {
+    left: 0;
+    border-left: 1px solid var(--panel-border);
+    border-bottom-left-radius: 8px;
+  }
+
+  &--right {
+    right: 0;
+    border-right: 1px solid var(--panel-border);
+    border-bottom-right-radius: 8px;
+  }
+}
+
+.flow-outcomes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.panel-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ---- Section header ---- */
+.lifecycle-header {
+  margin-bottom: 16px;
+
+  &__title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 640px;
+  }
+}
+
+/* ---- Strict card consistency ---- */
+.flow-card {
+  box-sizing: border-box;
+  max-width: 280px;
+}
+
+/* ---- Branch connector (Decision -> Normal / Fraud) ---- */
+.branch-connector {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 34px;
+}
+
+.branch-connector__stem {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 14px;
+  background: var(--panel-border);
+  transform: translateX(-50%);
+}
+
+.branch-connector__bar {
+  position: absolute;
+  top: 14px;
+  left: 25%;
+  width: 50%;
+  height: 1px;
+  background: var(--panel-border);
+}
+
+.branch-connector__leg {
+  position: absolute;
+  top: 14px;
+  width: 1px;
+  height: 20px;
+  background: var(--panel-border);
+
+  &--left { left: 25%; }
+  &--right { left: 75%; }
+}
+
+.flow-outcomes {
+  max-width: 280px;
+}
+
+.panel-note--threshold {
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ---- KPI card descriptions ---- */
+.metric-card__desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  opacity: 0.85;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* ---- Section spacing & title hierarchy ---- */
+.panel--full {
+  margin-bottom: 24px;
+}
+
+.metrics-grid {
+  margin-bottom: 24px;
+}
+
+.metrics-note {
+  margin-bottom: 24px;
+}
+
+.panel__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.panel__subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  opacity: 0.85;
+  margin: -6px 0 16px;
+  line-height: 1.5;
+}
+
+.flow-panels {
+  margin-bottom: 24px;
+}
+
+.lifecycle-header {
+  margin-bottom: 20px;
+}
+
+/* ---- Softer paragraph typography ---- */
+.panel__intro,
+.panel-note,
+.feature-note,
+.metrics-note,
+.reason-card__desc {
+  opacity: 0.85;
+  line-height: 1.65;
+}
+
+.note {
+  opacity: 0.8;
+  line-height: 1.65;
+}

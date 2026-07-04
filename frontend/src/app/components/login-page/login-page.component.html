@@ -1,0 +1,43 @@
+<div class="auth">
+  <div class="auth__card">
+    <div class="auth__brand">
+      <span class="auth__mark"></span>
+      <span>FraudShield <strong>AI</strong></span>
+    </div>
+
+    <h1>{{ mode() === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
+    <p class="subtitle">
+      {{ mode() === 'login' ? 'Log in to access your dashboard.' : 'Start monitoring fraud in minutes.' }}
+    </p>
+
+    <form (ngSubmit)="submit()">
+      <div class="field" *ngIf="mode() === 'signup'">
+        <label>Full name</label>
+        <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Malak Bakhouti" />
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="you@company.com" required />
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" name="password" placeholder="••••••••" required />
+      </div>
+
+      <p class="error" *ngIf="error()">{{ error() }}</p>
+
+      <button type="submit" class="btn" [disabled]="loading()">
+        {{ loading() ? 'Please wait...' : (mode() === 'login' ? 'Log in' : 'Sign up') }}
+      </button>
+    </form>
+
+    <p class="switch">
+      {{ mode() === 'login' ? "Don't have an account?" : "Already have an account?" }}
+      <a (click)="toggleMode()">{{ mode() === 'login' ? 'Sign up' : 'Log in' }}</a>
+    </p>
+
+    <a routerLink="/" class="back-home">← Back to home</a>
+  </div>
+</div>

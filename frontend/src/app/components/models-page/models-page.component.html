@@ -1,0 +1,181 @@
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1>{{ model.name }}</h1>
+      <p class="subtitle">{{ model.algorithm }} · Version {{ model.version }}</p>
+    </div>
+    <span class="status-badge">{{ model.status }}</span>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card" *ngFor="let m of model.metrics">
+      <span class="metric-card__label">{{ m.label }}</span>
+      <span class="metric-card__value">{{ m.value }}</span>
+      <span class="metric-card__desc">{{ m.desc }}</span>
+    </div>
+  </div>
+
+  <p class="metrics-note">
+    Accuracy alone is not sufficient for fraud detection because fraudulent transactions are extremely rare.
+    Therefore, Precision, Recall, ROC-AUC and PR-AUC are the primary evaluation metrics.
+  </p>
+
+  <div class="panel panel--full">
+    <div class="panel__title">Model Selection</div>
+    <p class="panel__intro">
+      Several machine learning algorithms were evaluated during development before selecting the model deployed in production.
+    </p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Model</th><th>Status</th><th>Comment</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of modelComparison" [class.comparison-table__row--selected]="row.selected">
+          <td>{{ row.model }}</td>
+          <td>
+            <span class="model-status" [class.model-status--selected]="row.selected">{{ row.status }}</span>
+          </td>
+          <td>{{ row.comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel panel--full">
+    <div class="panel__title">Why Random Forest?</div>
+    <div class="reasons-grid">
+      <div class="reason-card" *ngFor="let reason of whyReasons">
+        <span class="reason-card__icon" [ngClass]="'reason-card__icon--' + reason.color"></span>
+        <span class="reason-card__title">{{ reason.title }}</span>
+        <span class="reason-card__desc">{{ reason.description }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lifecycle-header">
+    <span class="lifecycle-header__title">AI Model Lifecycle</span>
+    <p class="lifecycle-header__desc">
+      The following diagrams illustrate how the machine learning model is trained offline
+      and then used in production for real-time fraud detection.
+    </p>
+  </div>
+
+  <div class="flow-panels">
+    <div class="panel">
+      <div class="panel__title">
+        <span class="panel__icon panel__icon--pink"></span>
+        Training Pipeline
+      </div>
+      <div class="flow-diagram">
+        <ng-container *ngFor="let step of trainingPipeline; let last = last">
+          <div class="flow-card">{{ step }}</div>
+          <span class="flow-arrow" *ngIf="!last">↓</span>
+        </ng-container>
+      </div>
+      <p class="panel-note">
+        The machine learning model is trained offline using historical transaction data.
+        After evaluation, the trained model is deployed to the application, where it is
+        used only for inference.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel__title">
+        <span class="panel__icon panel__icon--blue"></span>
+        Real-Time Detection Workflow
+      </div>
+      <div class="flow-diagram">
+        <ng-container *ngFor="let step of detectionWorkflow; let last = last">
+          <div class="flow-card flow-card--blue">{{ step }}</div>
+          <span class="flow-arrow" *ngIf="!last">↓</span>
+        </ng-container>
+        <div class="branch-connector">
+          <div class="branch-connector__stem"></div>
+          <div class="branch-connector__bar"></div>
+          <div class="branch-connector__leg branch-connector__leg--left"></div>
+          <div class="branch-connector__leg branch-connector__leg--right"></div>
+        </div>
+        <div class="flow-outcomes">
+          <div class="flow-card flow-card--normal">Normal Transaction</div>
+          <div class="flow-card flow-card--fraud">Fraud Alert</div>
+        </div>
+      </div>
+      <p class="panel-note">
+        Every incoming transaction is processed in real time. The deployed Random Forest
+        model estimates the probability of fraud, and the application applies the decision
+        policy to classify the transaction as either Normal or Fraud Alert.
+      </p>
+      <p class="panel-note panel-note--threshold">
+        The final decision is based on a configurable fraud probability threshold defined
+        by the fraud detection policy.
+      </p>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel__title">
+        <span class="panel__icon panel__icon--green"></span>
+        Model Details
+      </div>
+      <div class="detail-row">
+        <span>Algorithm</span>
+        <span>{{ model.algorithm }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Estimators</span>
+        <span>{{ model.estimators }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Max depth</span>
+        <span>{{ model.maxDepth }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Class balancing</span>
+        <span>{{ model.balancing }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Trained on</span>
+        <span>{{ model.trainedOn }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Prediction latency</span>
+        <span>{{ model.predictionLatency }}</span>
+      </div>
+      <div class="detail-row">
+        <span>Last training date</span>
+        <span>{{ model.lastTrainingDate }}</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__title">
+        <span class="panel__icon panel__icon--yellow"></span>
+        Top Feature Importance
+      </div>
+      <p class="panel__subtitle">
+        Most influential features used by the Random Forest model for fraud prediction.
+      </p>
+      <div class="feature-row" *ngFor="let f of model.topFeatures">
+        <span class="feature-row__name">{{ f.name }}</span>
+        <div class="feature-row__bar">
+          <div class="feature-row__fill" [style.width.%]="f.importance * 4"></div>
+        </div>
+        <span class="feature-row__value">{{ f.importance }}%</span>
+      </div>
+      <p class="feature-note">
+        The original dataset was anonymized using Principal Component Analysis (PCA), therefore
+        variables are named V1, V2 ... V28 instead of real banking attributes.
+        These anonymized components preserve the statistical information required for fraud
+        detection while protecting sensitive customer information.
+      </p>
+    </div>
+  </div>
+
+  <p class="note">
+    This Random Forest model was trained offline using historical banking transactions and
+    deployed for real-time fraud prediction. The application performs inference only; model
+    retraining is intentionally restricted to the data science workflow.
+  </p>
+</div>

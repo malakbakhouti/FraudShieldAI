@@ -14,8 +14,10 @@
   </div>
 
   <div class="alerts-list" *ngIf="!loading()">
-    <div class="alert-card" *ngFor="let tx of alerts()" [class.reviewed]="isReviewed(tx.id)">
-      <div class="alert-card__icon">!</div>
+    <div class="alert-card" *ngFor="let tx of alerts()" [class.alert-card--closed]="getStatus(tx.id) === 'closed'">
+      <div class="alert-card__icon"
+           [class.alert-card__icon--legitimate]="getStatus(tx.id) === 'legitimate'"
+           [class.alert-card__icon--confirmed]="getStatus(tx.id) === 'confirmed'">!</div>
 
       <div class="alert-card__body">
         <div class="alert-card__top">
@@ -23,16 +25,31 @@
           <span class="alert-card__amount">{{ tx.amount | number:'1.2-2' }} €</span>
         </div>
         <div class="alert-card__meta">
-          Risk score {{ (tx.fraud_probability * 100) | number:'1.0-0' }}%
+          Fraud probability {{ (tx.fraud_probability * 100) | number:'1.0-0' }}%
           · {{ tx.created_at | date:'dd/MM/yy HH:mm:ss' }}
         </div>
+
+        <span class="status-pill"
+              [class.status-pill--pending]="getStatus(tx.id) === 'pending'"
+              [class.status-pill--legitimate]="getStatus(tx.id) === 'legitimate'"
+              [class.status-pill--confirmed]="getStatus(tx.id) === 'confirmed'"
+              [class.status-pill--closed]="getStatus(tx.id) === 'closed'">
+          {{ getStatus(tx.id) === 'pending' ? 'Pending Review' : '' }}
+          {{ getStatus(tx.id) === 'legitimate' ? 'Marked Legitimate' : '' }}
+          {{ getStatus(tx.id) === 'confirmed' ? 'Fraud Confirmed' : '' }}
+          {{ getStatus(tx.id) === 'closed' ? 'Closed' : '' }}
+        </span>
       </div>
 
       <div class="alert-card__actions">
-        <span *ngIf="isReviewed(tx.id)" class="reviewed-badge">Reviewed</span>
-        <button *ngIf="!isReviewed(tx.id)" class="btn btn--outline" (click)="markReviewed(tx.id)">
-          Mark as Reviewed
-        </button>
+        <ng-container *ngIf="getStatus(tx.id) === 'pending'">
+          <button class="btn btn--outline" (click)="setStatus(tx.id, 'legitimate')">Mark as Legitimate</button>
+          <button class="btn btn--danger" (click)="setStatus(tx.id, 'confirmed')">Confirm Fraud</button>
+        </ng-container>
+
+        <ng-container *ngIf="getStatus(tx.id) === 'legitimate' || getStatus(tx.id) === 'confirmed'">
+          <button class="btn btn--outline" (click)="setStatus(tx.id, 'closed')">Close Alert</button>
+        </ng-container>
       </div>
     </div>
   </div>

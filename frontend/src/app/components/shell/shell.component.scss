@@ -1,11 +1,11 @@
 :host {
-  --bg: #fdfbf9;
+  --bg: #fffaf7;
   --text: #1a1a2e;
   --text-dim: #6b6b80;
-  --coral: #e8607a;
-  --coral-light: #fce8ec;
-  --teal: #1d9e75;
-  --panel-border: #eeece7;
+  --coral: #d97fa0;
+  --coral-light: #ffcbe1;
+  --teal: #6a8f4a;
+  --panel-border: #f0e9e4;
 
   display: block;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -85,4 +85,113 @@
 .content {
   padding: 32px 40px;
   overflow-y: auto;
+}
+
+.sidebar__user {
+  font-size: 12px;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar__email {
+  color: var(--text-dim);
+  word-break: break-all;
+}
+
+.sidebar__logout {
+  background: none;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--coral);
+  cursor: pointer;
+  align-self: flex-start;
+
+  &:hover { background: var(--coral-light); }
+}
+
+.sidebar__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #ffcbe1, #bcd8ec);
+  flex-shrink: 0;
+}
+
+.user-card {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-card__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-card__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffcbe1, #bcd8ec);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.user-card__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 10px;
+  background: #d6e5bd;
+  color: #5a7a3a;
+
+  &--admin {
+    background: #bcd8ec;
+    color: #3a6f96;
+  }
+}
+
+.user-card__logout {
+  width: 100%;
+  background: none;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #d97fa0;
+  cursor: pointer;
+
+  &:hover { background: #ffcbe1; }
 }

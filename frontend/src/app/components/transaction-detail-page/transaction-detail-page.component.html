@@ -1,0 +1,87 @@
+<div class="page">
+  <a routerLink="/app/transactions" class="back-link">← Back to Transactions</a>
+
+  <div *ngIf="loading()" class="loading">Loading transaction...</div>
+
+  <div *ngIf="notFound()" class="empty">
+    Transaction not found.
+  </div>
+
+  <ng-container *ngIf="transaction() as tx">
+    <div class="page__header">
+      <div>
+        <h1>Transaction #{{ tx.id }}</h1>
+        <p class="subtitle">{{ tx.created_at | date:'dd MMM yyyy, HH:mm:ss' }}</p>
+      </div>
+      <span class="status-badge" [class.status-badge--fraud]="tx.is_fraud">
+        {{ tx.is_fraud ? 'Fraud Alert' : 'Approved' }}
+      </span>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="panel__title">Customer Information</div>
+        <div class="detail-row">
+          <span>Card Number</span>
+          <span>{{ cardMask }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Country</span>
+          <span>{{ country }}</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel__title">Transaction Information</div>
+        <div class="detail-row">
+          <span>Amount</span>
+          <span>{{ tx.amount | number:'1.2-2' }} €</span>
+        </div>
+        <div class="detail-row">
+          <span>Date</span>
+          <span>{{ tx.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Status</span>
+          <span>{{ tx.is_fraud ? 'Fraud Alert' : 'Approved' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel--full">
+      <div class="panel__title">AI Prediction</div>
+      <div class="prediction-grid">
+        <div class="prediction-stat">
+          <span class="prediction-stat__label">Fraud Probability</span>
+          <span class="prediction-stat__value">{{ (tx.fraud_probability * 100) | number:'1.1-1' }}%</span>
+        </div>
+        <div class="prediction-stat">
+          <span class="prediction-stat__label">Risk Level</span>
+          <span class="risk-pill" [class.risk-pill--high]="riskLevel(tx.fraud_probability) === 'high'"
+                                    [class.risk-pill--medium]="riskLevel(tx.fraud_probability) === 'medium'"
+                                    [class.risk-pill--low]="riskLevel(tx.fraud_probability) === 'low'">
+            {{ riskLevel(tx.fraud_probability) === 'high' ? 'High' : riskLevel(tx.fraud_probability) === 'medium' ? 'Medium' : 'Low' }}
+          </span>
+        </div>
+        <div class="prediction-stat">
+          <span class="prediction-stat__label">Model Decision</span>
+          <span class="prediction-stat__value">{{ tx.is_fraud ? 'Fraud' : 'Normal' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel--full" *ngIf="topFeatures.length > 0">
+      <div class="panel__title">Model Features (Top Contributors)</div>
+      <p class="panel__subtitle">
+        These anonymized PCA components had the strongest influence on this specific prediction.
+      </p>
+      <div class="feature-row" *ngFor="let f of topFeatures">
+        <span class="feature-row__name">{{ f.key }}</span>
+        <div class="feature-row__bar">
+          <div class="feature-row__fill" [style.width.%]="(f.value < 0 ? -f.value : f.value) * 20"></div>
+        </div>
+        <span class="feature-row__value">{{ f.value | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

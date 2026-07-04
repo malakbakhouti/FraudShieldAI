@@ -1,0 +1,129 @@
+:host {
+  --bg: #fffaf7;
+  --text: #1a1a2e;
+  --text-dim: #6b6b80;
+  --coral: #d97fa0;
+  --coral-light: #ffcbe1;
+  --panel-border: #f0e9e4;
+
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 24px;
+}
+
+.auth__card {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.auth__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 22px;
+  margin-bottom: 32px;
+
+  strong { color: var(--coral); }
+}
+
+.auth__mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #ffcbe1, #bcd8ec);
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0 0 24px;
+}
+
+.field {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--coral);
+    }
+  }
+}
+
+.btn {
+  width: 100%;
+  background: var(--coral);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+
+  &:hover { opacity: 0.9; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.error {
+  color: var(--coral);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.switch {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 20px 0 0;
+
+  a {
+    color: var(--coral);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+.back-home {
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-top: 20px;
+}

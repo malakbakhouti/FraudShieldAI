@@ -1,18 +1,33 @@
 <div class="shell">
   <aside class="sidebar">
     <div class="sidebar__brand">
-      <img src="assets/logo.png" alt="" />
+      <span class="sidebar__mark"></span>
       <span>FraudShield <strong>AI</strong></span>
     </div>
 
     <nav class="sidebar__nav">
-      <a *ngFor="let item of navItems"
-         [routerLink]="item.path"
-         routerLinkActive="active"
-         class="sidebar__link">
-        {{ item.label }}
-      </a>
+      <ng-container *ngFor="let item of navItems">
+        <a *ngIf="!item.adminOnly || auth.isAdmin()"
+           [routerLink]="item.path"
+           routerLinkActive="active"
+           class="sidebar__link">
+          {{ item.label }}
+        </a>
+      </ng-container>
     </nav>
+
+    <div class="user-card" *ngIf="auth.currentUser() as user">
+      <div class="user-card__top">
+        <span class="user-card__avatar">{{ (user.full_name || user.email).charAt(0) }}</span>
+        <div class="user-card__info">
+          <span class="user-card__name">{{ user.full_name || user.email }}</span>
+          <span class="role-badge" [class.role-badge--admin]="user.role === 'admin'">
+            {{ user.role === 'admin' ? 'Admin' : 'Fraud Analyst' }}
+          </span>
+        </div>
+      </div>
+      <button class="user-card__logout" (click)="auth.logout()">Log out</button>
+    </div>
 
     <div class="sidebar__status">
       <span class="dot"></span> All systems operational
