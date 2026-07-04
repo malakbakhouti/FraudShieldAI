@@ -1,0 +1,233 @@
+<div class="home">
+  <img src="assets/Arriereplan1.png" class="blob blob--top" alt="" />
+  <img src="assets/Arriereplan2.png" class="blob blob--bottom" alt="" />
+
+  <nav class="nav">
+    <div class="nav__brand">
+      <img src="assets/logo.png" alt="FraudShield AI" class="nav__logo" />
+      <span>FraudShield <strong>AI</strong></span>
+    </div>
+    <div class="nav__links">
+      <a>Product</a>
+      <a>Features</a>
+      <a>How it works</a>
+      <a>Pricing</a>
+      <a>Resources</a>
+    </div>
+    <div class="nav__actions">
+      <a class="nav__login">Log in</a>
+      <a routerLink="/dashboard" class="nav__cta">Get Started</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__text">
+      <span class="hero__eyebrow">AI-Powered Fraud Detection</span>
+      <h1>
+        Stop <span class="hero__accent">fraud.</span><br />
+        Protect every <span class="hero__accent-2">transaction.</span>
+      </h1>
+      <p>
+        FraudShield AI analyzes every credit card transaction in real-time to detect
+        fraud in milliseconds — blocking threats without blocking your customers.
+      </p>
+      <div class="hero__buttons">
+        <a routerLink="/dashboard" class="hero__button">Request a Demo</a>
+        <a routerLink="/dashboard" class="hero__button hero__button--outline">See How It Works</a>
+      </div>
+      <div class="hero__trust">
+        <div class="hero__avatars">
+          <span class="avatar avatar--1"></span>
+          <span class="avatar avatar--2"></span>
+          <span class="avatar avatar--3"></span>
+        </div>
+        <p>Trusted by 2,000+ financial institutions<br />to secure millions of transactions daily.</p>
+      </div>
+    </div>
+
+    <div class="hero__panel">
+      <div class="panel__header">
+        <span>Live Detection</span>
+        <span class="panel__live">● Real-time</span>
+      </div>
+
+      <div class="panel__stats">
+        <div class="panel__stat">
+          <span class="panel__label">Transactions Analyzed</span>
+          <span class="panel__value">24,875</span>
+          <span class="panel__delta">↑ 18.6% vs yesterday</span>
+        </div>
+        <div class="panel__stat">
+          <span class="panel__label">Fraudulent Transactions</span>
+          <span class="panel__value">312</span>
+          <span class="panel__delta">1.25% of total</span>
+        </div>
+        <div class="panel__stat panel__stat--alert">
+          <span class="panel__label">Risk Blocked</span>
+          <span class="panel__value">$128,430</span>
+          <span class="panel__delta">Today</span>
+        </div>
+      </div>
+
+      <div class="panel__table-title">Recent Transactions</div>
+      <table class="panel__table">
+        <thead>
+          <tr><th>Transaction</th><th>Amount</th><th>Risk Score</th><th>Status</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>•••• 4532</td>
+            <td>$1,250.00</td>
+            <td><span class="risk risk--high">92</span></td>
+            <td><span class="status status--blocked">Blocked</span></td>
+            <td>2 sec ago</td>
+          </tr>
+          <tr>
+            <td>•••• 9821</td>
+            <td>$89.90</td>
+            <td><span class="risk risk--medium">45</span></td>
+            <td><span class="status status--review">Review</span></td>
+            <td>5 sec ago</td>
+          </tr>
+          <tr>
+            <td>•••• 7710</td>
+            <td>$45.50</td>
+            <td><span class="risk risk--low">12</span></td>
+            <td><span class="status status--approved">Approved</span></td>
+            <td>8 sec ago</td>
+          </tr>
+        </tbody>
+      </table>
+      <a routerLink="/dashboard" class="panel__view-all">View all transactions →</a>
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="feature">
+      <img src="assets/logo1.png" class="feature__icon" alt="" />
+      <h3>Real-time Detection</h3>
+      <p>Analyze transactions in milliseconds.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/logo2.png" class="feature__icon" alt="" />
+      <h3>AI & Machine Learning</h3>
+      <p>Advanced models that learn and adapt continuously.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/logo3.png" class="feature__icon" alt="" />
+      <h3>Reduce Chargebacks</h3>
+      <p>Block fraud before it happens and save costs.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/logo4.png" class="feature__icon" alt="" />
+      <h3>Powerful Analytics</h3>
+      <p>Gain insights and monitor fraud trends.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/logo5.png" class="feature__icon" alt="" />
+      <h3>Seamless Experience</h3>
+      <p>Protects without friction for legitimate customers.</p>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="how__text">
+      <span class="how__eyebrow">How it works</span>
+      <h2>Intelligent protection in <span class="hero__accent">3 simple steps</span></h2>
+
+      <div class="step">
+        <img src="assets/logo6.png" class="step__icon" alt="" />
+        <div>
+          <h4>1. Transaction Received</h4>
+          <p>Every transaction is captured in real-time from any channel.</p>
+        </div>
+      </div>
+      <div class="step">
+        <img src="assets/logo2.png" class="step__icon" alt="" />
+        <div>
+          <h4>2. AI Analysis</h4>
+          <p>Our AI evaluates hundreds of signals to calculate the risk score in milliseconds.</p>
+        </div>
+      </div>
+      <div class="step">
+        <img src="assets/logo7.png" class="step__icon" alt="" />
+        <div>
+          <h4>3. Smart Decision</h4>
+          <p>Approve legitimate transactions, review suspicious ones, and block fraudulent attempts instantly.</p>
+        </div>
+      </div>
+
+      <a routerLink="/dashboard" class="how__link">Learn More →</a>
+    </div>
+
+    <div class="dashboard-mock">
+      <div class="dashboard-mock__sidebar">
+        <div class="dashboard-mock__brand">
+          <img src="assets/logo.png" alt="" />
+          <span>FraudShield AI</span>
+        </div>
+        <div class="dashboard-mock__nav">
+          <span class="active">Dashboard</span>
+          <span>Transactions</span>
+          <span>Alerts</span>
+          <span>Models</span>
+          <span>Rules</span>
+          <span>Reports</span>
+          <span>Settings</span>
+        </div>
+        <div class="dashboard-mock__status">● All systems operational</div>
+      </div>
+
+      <div class="dashboard-mock__main">
+        <div class="dashboard-mock__header">
+          <span>Dashboard</span>
+          <span class="dashboard-mock__range">May 12 - May 18, 2026</span>
+        </div>
+
+        <div class="dashboard-mock__stats">
+          <div><span>Total Transactions</span><strong>1.25M</strong><small>↑ 15.3%</small></div>
+          <div><span>Fraud Detected</span><strong>15,782</strong><small>↑ 22.4%</small></div>
+          <div><span>Blocked Amount</span><strong>$2.45M</strong><small>↑ 18.7%</small></div>
+          <div><span>False Positive Rate</span><strong>0.18%</strong><small>↓ 8.2%</small></div>
+        </div>
+
+        <div class="dashboard-mock__chart-title">Fraudulent Transactions Over Time</div>
+        <svg class="dashboard-mock__chart" viewBox="0 0 400 100" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#e8607a" stroke-width="2"
+            points="0,80 50,60 100,70 150,40 200,55 250,25 300,45 350,15 400,30" />
+        </svg>
+
+        <div class="dashboard-mock__bottom">
+          <div class="dashboard-mock__countries">
+            <span class="dashboard-mock__panel-title">Top Risk Countries</span>
+            <div class="country"><span>Russia</span><div class="bar"><div style="width:90%; background:#e8607a"></div></div><span>1,250</span></div>
+            <div class="country"><span>Brazil</span><div class="bar"><div style="width:70%; background:#1d9e75"></div></div><span>980</span></div>
+            <div class="country"><span>India</span><div class="bar"><div style="width:62%; background:#ba7517"></div></div><span>874</span></div>
+            <div class="country"><span>Nigeria</span><div class="bar"><div style="width:45%; background:#378add"></div></div><span>645</span></div>
+          </div>
+          <div class="dashboard-mock__donut-wrap">
+            <span class="dashboard-mock__panel-title">Risk Score Distribution</span>
+            <div class="donut"></div>
+            <div class="donut-legend">
+              <span><i style="background:#e8607a"></i>High Risk (70-100) 15%</span>
+              <span><i style="background:#ba7517"></i>Medium Risk (30-69) 28%</span>
+              <span><i style="background:#1d9e75"></i>Low Risk (0-29) 57%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trusted">
+    <p>Trusted by leading banks and fintechs worldwide</p>
+    <div class="trusted__logos">
+      <img src="assets/logo8.png" alt="Chase" />
+      <img src="assets/logo9.png" alt="Barclays" />
+      <img src="assets/logo10.png" alt="N26" />
+      <img src="assets/logo11.png" alt="Revolut" />
+      <img src="assets/logo12.png" alt="PayPal" />
+      <img src="assets/logo13.png" alt="BBVA" />
+    </div>
+  </section>
+</div>
