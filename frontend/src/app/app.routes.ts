@@ -10,6 +10,7 @@ import { ReportsPageComponent } from './components/reports-page/reports-page.com
 import { ModelsPageComponent } from './components/models-page/models-page.component';
 import { UsersPageComponent } from './components/users-page/users-page.component';
 import { SettingsPageComponent } from './components/settings-page/settings-page.component';
+import { LiveDetectionPageComponent } from './components/live-detection-page/live-detection-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
@@ -24,6 +25,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
+      { path: 'live-detection', component: LiveDetectionPageComponent },
       { path: 'transactions', component: TransactionsPageComponent },
       { path: 'transactions/:id', component: TransactionDetailPageComponent },
       { path: 'alerts', component: AlertsPageComponent },

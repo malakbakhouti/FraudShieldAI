@@ -1,0 +1,123 @@
+:host {
+  --text: #2a2438;
+  --text-dim: #756f85;
+  --pink: #ffcbe1;
+  --pink-text: #b3567e;
+  --green: #d6e5bd;
+  --green-text: #5a7a3a;
+  --panel-border: #f0e9e4;
+
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+}
+
+.page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.status {
+  font-size: 13px;
+  color: var(--text-dim);
+
+  &--live { color: var(--green-text); }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &--alert { border-color: var(--pink); }
+
+  &__label { font-size: 13px; color: var(--text-dim); }
+  &__value { font-size: 24px; font-weight: 700; }
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 20px;
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  tr:last-child td { border-bottom: none; }
+}
+
+.row--fraud { background: var(--pink); }
+
+.risk {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+
+  &--high { background: var(--pink); color: var(--pink-text); }
+  &--low { background: var(--green); color: var(--green-text); }
+}
+
+.status-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 12px;
+
+  &--blocked { background: var(--pink); color: var(--pink-text); }
+  &--approved { background: var(--green); color: var(--green-text); }
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 20px;
+
+  &:hover { color: var(--text); }
+}

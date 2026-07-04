@@ -1,0 +1,52 @@
+<div class="page">
+  <a routerLink="/app/dashboard" class="back-link">← Back to Dashboard</a>
+  <div class="page__header">
+    <h1>Live Detection</h1>
+    <span class="status" [class.status--live]="txService.connected()">
+      {{ txService.connected() ? '● Real-time' : '○ Disconnected' }}
+    </span>
+  </div>
+
+  <div class="stats" *ngIf="txService.stats() as stats">
+    <div class="stat-card">
+      <span class="stat-card__label">Transactions Analyzed</span>
+      <span class="stat-card__value">{{ stats.total_transactions }}</span>
+    </div>
+    <div class="stat-card stat-card--alert">
+      <span class="stat-card__label">Fraudulent Transactions</span>
+      <span class="stat-card__value">{{ stats.total_frauds }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card__label">Fraud Rate</span>
+      <span class="stat-card__value">{{ stats.fraud_rate | number:'1.2-2' }}%</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel__title">Recent Transactions</div>
+    <table class="table">
+      <thead>
+        <tr><th>ID</th><th>Amount</th><th>Risk Score</th><th>Status</th><th>Time</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of txService.transactions()" [class.row--fraud]="tx.is_fraud">
+          <td>#{{ tx.id }}</td>
+          <td>{{ tx.amount | number:'1.2-2' }} €</td>
+          <td>
+            <span class="risk" [class.risk--high]="tx.fraud_probability > 0.5"
+                                [class.risk--low]="tx.fraud_probability <= 0.5">
+              {{ (tx.fraud_probability * 100) | number:'1.0-0' }}
+            </span>
+          </td>
+          <td>
+            <span class="status-pill" [class.status-pill--blocked]="tx.is_fraud"
+                                        [class.status-pill--approved]="!tx.is_fraud">
+              {{ tx.is_fraud ? 'Blocked' : 'Approved' }}
+            </span>
+          </td>
+          <td>{{ tx.created_at | date:'HH:mm:ss' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

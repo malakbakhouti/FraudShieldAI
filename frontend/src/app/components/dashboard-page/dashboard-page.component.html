@@ -1,7 +1,7 @@
 <div class="dashboard">
   <div class="dashboard__header">
     <h1>Dashboard</h1>
-    <span class="dashboard__range">Live data</span>
+    <a routerLink="/app/live-detection" class="btn-live">View Live Detection</a>
   </div>
 
   <div class="stats" *ngIf="txService.stats() as stats">
@@ -23,33 +23,77 @@
     </div>
   </div>
 
-  <div class="panel">
-    <div class="panel__title">Live Transactions</div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th><th>Amount</th><th>Risk Score</th><th>Status</th><th>Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let tx of txService.transactions()" [class.row--fraud]="tx.is_fraud">
-          <td>#{{ tx.id }}</td>
-          <td>{{ tx.amount | number:'1.2-2' }} €</td>
-          <td>
-            <span class="risk" [class.risk--high]="tx.fraud_probability > 0.5"
-                                [class.risk--low]="tx.fraud_probability <= 0.5">
-              {{ (tx.fraud_probability * 100) | number:'1.0-0' }}
-            </span>
-          </td>
-          <td>
-            <span class="status" [class.status--blocked]="tx.is_fraud"
-                                  [class.status--approved]="!tx.is_fraud">
-              {{ tx.is_fraud ? 'Blocked' : 'Approved' }}
-            </span>
-          </td>
-          <td>{{ tx.created_at | date:'HH:mm:ss' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="panel panel--full">
+    <div class="chart-header">
+      <div class="panel__title">Fraudulent Transactions Over Time</div>
+      <select class="chart-select" (change)="onRangeChange($event)">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+    </div>
+
+    <div class="chart-area">
+      <div class="chart-yaxis">
+        <span>3K</span>
+        <span>2K</span>
+        <span>1K</span>
+        <span>0</span>
+      </div>
+
+      <div class="chart-plot">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="none">
+          <line x1="0" y1="10" x2="400" y2="10" class="gridline" />
+          <line x1="0" y1="50" x2="400" y2="50" class="gridline" />
+          <line x1="0" y1="90" x2="400" y2="90" class="gridline" />
+          <line x1="0" y1="130" x2="400" y2="130" class="gridline gridline--base" />
+
+          <polygon [attr.points]="areaPoints" fill="url(#areaFill)" />
+          <polyline [attr.points]="chartPoints" fill="none" stroke="#e8607a" stroke-width="2.5" />
+
+          <circle *ngFor="let p of chartDots" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#e8607a" />
+
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8607a" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#e8607a" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <div class="chart-xaxis">
+      <span *ngFor="let label of chartLabels">{{ label }}</span>
+    </div>
   </div>
+
+  <div class="bottom-panels">
+    <div class="panel">
+      <div class="panel__title">Top Risk Countries</div>
+      <div class="country-row" *ngFor="let c of topCountries">
+        <span class="country-row__flag">{{ c.flag }}</span>
+        <span class="country-row__name">{{ c.name }}</span>
+        <div class="country-row__bar">
+          <div class="country-row__fill" [style.width.%]="(c.value / c.max) * 100"></div>
+        </div>
+        <span class="country-row__value">{{ c.value }}</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__title">Risk Score Distribution</div>
+      <div class="donut-wrap">
+        <div class="donut"
+             [style.background]="'conic-gradient(#e8607a 0% ' + riskDistribution.high + '%, #ba7517 ' + riskDistribution.high + '% ' + (riskDistribution.high + riskDistribution.medium) + '%, #1d9e75 ' + (riskDistribution.high + riskDistribution.medium) + '% 100%)'">
+        </div>
+        <div class="donut-legend">
+          <span><i class="dot" style="background:#e8607a"></i>High Risk (70-100) {{ riskDistribution.high }}%</span>
+          <span><i class="dot" style="background:#ba7517"></i>Medium Risk (30-69) {{ riskDistribution.medium }}%</span>
+          <span><i class="dot" style="background:#1d9e75"></i>Low Risk (0-29) {{ riskDistribution.low }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
