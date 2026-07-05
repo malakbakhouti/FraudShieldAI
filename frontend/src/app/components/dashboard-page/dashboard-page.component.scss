@@ -294,3 +294,23 @@
   font-size: 11px;
   color: var(--text-dim);
 }
+
+.axis-label {
+  font-size: 10px;
+  fill: var(--text-dim);
+}
+
+.chart-plot--full {
+  width: 100%;
+  height: 150px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+.chart-xaxis {
+  display: none;
+}

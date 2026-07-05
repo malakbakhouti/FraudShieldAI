@@ -10,6 +10,7 @@ import { ReportsPageComponent } from './components/reports-page/reports-page.com
 import { ModelsPageComponent } from './components/models-page/models-page.component';
 import { UsersPageComponent } from './components/users-page/users-page.component';
 import { SettingsPageComponent } from './components/settings-page/settings-page.component';
+import { ImportPageComponent } from './components/import-page/import-page.component';
 import { LiveDetectionPageComponent } from './components/live-detection-page/live-detection-page.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { authGuard } from './guards/auth.guard';
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'models', component: ModelsPageComponent, canActivate: [adminGuard] },
       { path: 'rules', component: PlaceholderPageComponent, data: { title: 'Rules', description: 'Configure automated fraud detection rules.' } },
       { path: 'reports', component: ReportsPageComponent },
+      { path: 'import', component: ImportPageComponent },
       { path: 'settings', component: SettingsPageComponent },
       { path: 'users', component: UsersPageComponent, canActivate: [adminGuard] },
     ]

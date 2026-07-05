@@ -24,54 +24,41 @@
   </div>
 
   <div class="panel panel--full">
-    <div class="chart-header">
-      <div class="panel__title">Fraudulent Transactions Over Time</div>
-      <select class="chart-select" (change)="onRangeChange($event)">
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-      </select>
-    </div>
+    <div class="panel__title">Fraudulent Transactions Over Time</div>
 
-    <div class="chart-area">
-      <div class="chart-yaxis">
-        <span>3K</span>
-        <span>2K</span>
-        <span>1K</span>
-        <span>0</span>
-      </div>
+    <div class="chart-plot--full">
+      <svg viewBox="0 0 440 150" preserveAspectRatio="none">
+        <line x1="36" y1="10" x2="440" y2="10" class="gridline" />
+        <line x1="36" y1="50" x2="440" y2="50" class="gridline" />
+        <line x1="36" y1="90" x2="440" y2="90" class="gridline" />
+        <line x1="36" y1="130" x2="440" y2="130" class="gridline gridline--base" />
 
-      <div class="chart-plot">
-        <svg viewBox="0 0 400 150" preserveAspectRatio="none">
-          <line x1="0" y1="10" x2="400" y2="10" class="gridline" />
-          <line x1="0" y1="50" x2="400" y2="50" class="gridline" />
-          <line x1="0" y1="90" x2="400" y2="90" class="gridline" />
-          <line x1="0" y1="130" x2="400" y2="130" class="gridline gridline--base" />
+        <text x="28" y="13" text-anchor="end" class="axis-label">{{ chartYLabels[0] }}</text>
+        <text x="28" y="53" text-anchor="end" class="axis-label">{{ chartYLabels[1] }}</text>
+        <text x="28" y="93" text-anchor="end" class="axis-label">{{ chartYLabels[2] }}</text>
+        <text x="28" y="133" text-anchor="end" class="axis-label">{{ chartYLabels[3] }}</text>
 
-          <polygon [attr.points]="areaPoints" fill="url(#areaFill)" />
-          <polyline [attr.points]="chartPoints" fill="none" stroke="#e8607a" stroke-width="2.5" />
+        <polygon [attr.points]="areaPointsOffset" fill="url(#areaFill)" />
+        <polyline [attr.points]="chartPointsOffset" fill="none" stroke="#e8607a" stroke-width="2.5" />
 
-          <circle *ngFor="let p of chartDots" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#e8607a" />
+        <circle *ngFor="let p of chartDotsOffset" [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#e8607a" />
 
-          <defs>
-            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#e8607a" stop-opacity="0.25" />
-              <stop offset="100%" stop-color="#e8607a" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-    </div>
+        <text *ngFor="let item of chartXLabelsPositioned" [attr.x]="item.x" y="146" text-anchor="middle" class="axis-label">{{ item.label }}</text>
 
-    <div class="chart-xaxis">
-      <span *ngFor="let label of chartLabels">{{ label }}</span>
+        <defs>
+          <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8607a" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="#e8607a" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
     </div>
   </div>
 
   <div class="bottom-panels">
     <div class="panel">
       <div class="panel__title">Top Risk Countries</div>
-      <div class="country-row" *ngFor="let c of topCountries">
+      <div class="country-row" *ngFor="let c of topCountries()">
         <span class="country-row__flag">{{ c.flag }}</span>
         <span class="country-row__name">{{ c.name }}</span>
         <div class="country-row__bar">
@@ -85,12 +72,12 @@
       <div class="panel__title">Risk Score Distribution</div>
       <div class="donut-wrap">
         <div class="donut"
-             [style.background]="'conic-gradient(#e8607a 0% ' + riskDistribution.high + '%, #ba7517 ' + riskDistribution.high + '% ' + (riskDistribution.high + riskDistribution.medium) + '%, #1d9e75 ' + (riskDistribution.high + riskDistribution.medium) + '% 100%)'">
+             [style.background]="'conic-gradient(#e8607a 0% ' + riskDistribution().high + '%, #ba7517 ' + riskDistribution().high + '% ' + (riskDistribution().high + riskDistribution().medium) + '%, #1d9e75 ' + (riskDistribution().high + riskDistribution().medium) + '% 100%)'">
         </div>
         <div class="donut-legend">
-          <span><i class="dot" style="background:#e8607a"></i>High Risk (70-100) {{ riskDistribution.high }}%</span>
-          <span><i class="dot" style="background:#ba7517"></i>Medium Risk (30-69) {{ riskDistribution.medium }}%</span>
-          <span><i class="dot" style="background:#1d9e75"></i>Low Risk (0-29) {{ riskDistribution.low }}%</span>
+          <span><i class="dot" style="background:#e8607a"></i>High Risk (70-100) {{ riskDistribution().high }}%</span>
+          <span><i class="dot" style="background:#ba7517"></i>Medium Risk (30-69) {{ riskDistribution().medium }}%</span>
+          <span><i class="dot" style="background:#1d9e75"></i>Low Risk (0-29) {{ riskDistribution().low }}%</span>
         </div>
       </div>
     </div>

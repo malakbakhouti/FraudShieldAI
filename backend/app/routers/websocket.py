@@ -1,6 +1,17 @@
 import asyncio
 import json
 import random
+
+COUNTRY_WEIGHTS = {
+    'France': 20, 'Germany': 15, 'United States': 15, 'United Kingdom': 12,
+    'Spain': 8, 'Italy': 8, 'Morocco': 6, 'Brazil': 5, 'Russia': 4,
+    'India': 4, 'Nigeria': 2, 'Indonesia': 1
+}
+
+def pick_country():
+    countries = list(COUNTRY_WEIGHTS.keys())
+    weights = list(COUNTRY_WEIGHTS.values())
+    return random.choices(countries, weights=weights, k=1)[0]
 import numpy as np
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from sqlalchemy.orm import Session
@@ -31,7 +42,8 @@ async def transactions_stream(websocket: WebSocket):
                 amount=amount,
                 features=json.dumps(features),
                 fraud_probability=result["fraud_probability"],
-                is_fraud=result["is_fraud"]
+                is_fraud=result["is_fraud"],
+                country=pick_country()
             )
             db.add(tx)
             db.commit()

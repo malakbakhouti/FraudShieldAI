@@ -20,6 +20,7 @@ export class ShellComponent {
     { label: 'Reports', path: '/app/reports', adminOnly: false },
     { label: 'Users', path: '/app/users', adminOnly: true },
     { label: 'Models', path: '/app/models', adminOnly: true },
+    { label: 'Import Dataset', path: '/app/import', adminOnly: false },
     { label: 'Settings', path: '/app/settings', adminOnly: false },
   ];
 }

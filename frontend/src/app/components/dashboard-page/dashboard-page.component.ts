@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
 import { RouterLink } from '@angular/router';
@@ -11,40 +11,54 @@ import { RouterLink } from '@angular/router';
   styleUrl: './dashboard-page.component.scss'
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
-  chartRange: 'daily' | 'weekly' | 'monthly' = 'daily';
+  dailySummary = signal<{ label: string; value: number }[]>([]);
 
-  private chartDatasets = {
-    daily: {
-      labels: ['May 12', 'May 13', 'May 14', 'May 15', 'May 16', 'May 17', 'May 18'],
-      values: [1000, 1400, 1100, 1900, 1250, 2050, 2900],
-      max: 3000
-    },
-    weekly: {
-      labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-      values: [6200, 8100, 7400, 9800],
-      max: 10000
-    },
-    monthly: {
-      labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      values: [21000, 25400, 23100, 29800, 32500],
-      max: 35000
-    }
-  };
-
-  onRangeChange(event: Event): void {
-    this.chartRange = (event.target as HTMLSelectElement).value as 'daily' | 'weekly' | 'monthly';
+  private groupByDay(): { label: string; value: number }[] {
+    return this.dailySummary();
   }
 
   get chartLabels(): string[] {
-    return this.chartDatasets[this.chartRange].labels;
+    return this.groupByDay().map(d => d.label);
+  }
+
+  get chartMax(): number {
+    const grouped = this.groupByDay();
+    const rawMax = grouped.length ? Math.max(...grouped.map(d => d.value)) : 0;
+
+    if (rawMax === 0) {
+      return 1;
+    }
+
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)));
+    return Math.ceil(rawMax / magnitude) * magnitude;
+  }
+
+  private formatAxisValue(v: number): string {
+    if (v >= 1000) {
+      return (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'K';
+    }
+    if (Number.isInteger(v)) {
+      return v.toString();
+    }
+    return v.toFixed(1);
+  }
+
+  get chartYLabels(): string[] {
+    const max = this.chartMax;
+    const values = [max, max * 0.66, max * 0.33, 0];
+    return values.map(v => this.formatAxisValue(v));
   }
 
   get chartDots(): { x: number; y: number }[] {
-    const { values, max } = this.chartDatasets[this.chartRange];
-    const step = 400 / (values.length - 1);
-    return values.map((v, i) => ({
-      x: i * step,
-      y: 130 - (v / max) * 120
+    const grouped = this.groupByDay();
+    if (grouped.length === 0) return [];
+
+    const max = this.chartMax;
+    const step = grouped.length > 1 ? 400 / (grouped.length - 1) : 0;
+
+    return grouped.map((d, i) => ({
+      x: grouped.length > 1 ? i * step : 200,
+      y: 130 - (d.value / max) * 120
     }));
   }
 
@@ -59,34 +73,59 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     return `${first.x},130 ` + dots.map(p => `${p.x},${p.y}`).join(' ') + ` ${last.x},130`;
   }
 
-  allCountries = [
-    { name: 'Russia', flag: '🇷🇺', value: 1250 },
-    { name: 'Brazil', flag: '🇧🇷', value: 980 },
-    { name: 'India', flag: '🇮🇳', value: 874 },
-    { name: 'Nigeria', flag: '🇳🇬', value: 645 },
-    { name: 'United Kingdom', flag: '🇬🇧', value: 432 },
-    { name: 'United States', flag: '🇺🇸', value: 398 },
-    { name: 'France', flag: '🇫🇷', value: 312 },
-    { name: 'Germany', flag: '🇩🇪', value: 287 },
-    { name: 'Mexico', flag: '🇲🇽', value: 254 },
-    { name: 'South Africa', flag: '🇿🇦', value: 201 },
-    { name: 'Indonesia', flag: '🇮🇩', value: 176 },
-    { name: 'Morocco', flag: '🇲🇦', value: 143 },
-  ];
-
-  get topCountries() {
-    const sorted = [...this.allCountries].sort((a, b) => b.value - a.value);
-    const max = sorted[0]?.value || 1;
-    return sorted.slice(0, 5).map(c => ({ ...c, max }));
+  get chartDotsOffset(): { x: number; y: number }[] {
+    return this.chartDots.map(p => ({ x: p.x + 36, y: p.y }));
   }
 
-  riskDistribution = { high: 15, medium: 28, low: 57 };
+  get chartXLabelsPositioned(): { label: string; x: number }[] {
+    const dots = this.chartDotsOffset;
+    const labels = this.chartLabels;
+    return labels.map((label, i) => ({ label, x: dots[i]?.x ?? 36 }));
+  }
+
+  get chartPointsOffset(): string {
+    return this.chartDotsOffset.map(p => `${p.x},${p.y}`).join(' ');
+  }
+
+  get areaPointsOffset(): string {
+    const dots = this.chartDotsOffset;
+    if (dots.length === 0) return '';
+    const first = dots[0];
+    const last = dots[dots.length - 1];
+    return `${first.x},130 ` + dots.map(p => `${p.x},${p.y}`).join(' ') + ` ${last.x},130`;
+  }
+
+  private countryFlags: Record<string, string> = {
+    'France': '🇫🇷', 'Germany': '🇩🇪', 'United States': '🇺🇸', 'United Kingdom': '🇬🇧',
+    'Spain': '🇪🇸', 'Italy': '🇮🇹', 'Morocco': '🇲🇦', 'Brazil': '🇧🇷',
+    'Russia': '🇷🇺', 'India': '🇮🇳', 'Nigeria': '🇳🇬', 'Indonesia': '🇮🇩'
+  };
+
+  topCountries = signal<{ name: string; flag: string; value: number; max: number }[]>([]);
+  riskDistribution = signal({ high: 0, medium: 0, low: 100 });
 
   constructor(public txService: TransactionService) {}
 
   ngOnInit(): void {
     this.txService.refreshStats();
     this.txService.connectStream();
+    this.txService.getDailySummary().subscribe(data => {
+      this.dailySummary.set(data.map(d => ({ label: d.day, value: d.frauds })));
+    });
+
+    this.txService.getTopCountries().subscribe(data => {
+      const max = Math.max(...data.map(d => d.value), 1);
+      this.topCountries.set(data.map(d => ({
+        name: d.name,
+        flag: this.countryFlags[d.name] || '🏳',
+        value: d.value,
+        max
+      })));
+    });
+
+    this.txService.getRiskDistribution().subscribe(data => {
+      this.riskDistribution.set(data);
+    });
   }
 
   ngOnDestroy(): void {

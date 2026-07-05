@@ -1,7 +1,7 @@
 <div class="page">
   <div class="page__header">
-    <h1>Import Transactions</h1>
-    <p class="subtitle">Upload a CSV file to score real transactions through the fraud model.</p>
+    <h1>Import Dataset</h1>
+    <p class="subtitle">Import historical transactions for analytics, reports, and model evaluation.</p>
   </div>
 
   <div class="panel" *ngIf="!result()">
@@ -16,7 +16,7 @@
         <p class="dropzone__title">Drag & drop your CSV here</p>
         <p class="dropzone__subtitle">or</p>
         <label class="btn btn--outline">
-          Browse files
+          Choose File
           <input type="file" accept=".csv" (change)="onFileSelected($event)" hidden />
         </label>
         <p class="dropzone__hint">
@@ -25,20 +25,63 @@
       </ng-container>
 
       <ng-container *ngIf="selectedFile() as file">
-        <p class="dropzone__filename">{{ file.name }}</p>
-        <p class="dropzone__filesize">{{ (file.size / 1024) | number:'1.0-1' }} KB</p>
-        <div class="dropzone__actions">
-          <button class="btn" (click)="upload()" [disabled]="uploading()">
-            {{ uploading() ? 'Processing...' : 'Import & Score' }}
+        <div class="file-info">
+          <div class="file-info__row">
+            <span>Filename</span>
+            <span>{{ file.name }}</span>
+          </div>
+          <div class="file-info__row">
+            <span>File size</span>
+            <span>{{ (file.size / 1024) | number:'1.0-1' }} KB</span>
+          </div>
+          <div class="file-info__row" *ngIf="!previewLoading()">
+            <span>Rows detected</span>
+            <span>{{ previewTotalRows() }}</span>
+          </div>
+          <div class="file-info__row" *ngIf="!previewLoading()">
+            <span>Columns detected</span>
+            <span>{{ previewColumns().length }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="previewLoading()" class="loading">Validating file...</div>
+
+        <div *ngIf="!uploading() && !previewLoading() && previewColumns().length > 0" class="preview">
+          <div class="preview__title">Preview (first 10 rows)</div>
+          <div class="preview__table-wrap">
+            <table class="preview__table">
+              <thead>
+                <tr>
+                  <th *ngFor="let col of previewColumns()">{{ col }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of previewRows()">
+                  <td *ngFor="let col of previewColumns()">{{ row[col] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf="uploading()" class="progress">
+          <div class="progress__bar">
+            <div class="progress__fill" [style.width.%]="uploadProgress()"></div>
+          </div>
+          <span class="progress__label">Importing... {{ uploadProgress() }}%</span>
+        </div>
+
+        <div class="dropzone__actions" *ngIf="!uploading()">
+          <button class="btn" (click)="confirmImport()" [disabled]="previewLoading() || previewColumns().length === 0">
+            Import & Score
           </button>
-          <button class="btn btn--outline" (click)="reset()" [disabled]="uploading()">
-            Cancel
-          </button>
+          <button class="btn btn--outline" (click)="cancel()">Cancel</button>
         </div>
       </ng-container>
     </div>
 
-    <p class="error" *ngIf="error()">{{ error() }}</p>
+    <p class="error" *ngIf="previewError()">{{ previewError() }}</p>
+    <p class="error" *ngIf="uploadError()">{{ uploadError() }}</p>
   </div>
 
   <div class="result" *ngIf="result() as res">
@@ -65,5 +108,44 @@
     </div>
 
     <button class="btn" (click)="reset()">Import another file</button>
+  </div>
+
+  <div class="panel panel--full">
+    <div class="panel__title">Import History</div>
+
+    <div *ngIf="historyLoading()" class="loading">Loading history...</div>
+
+    <div *ngIf="!historyLoading() && history().length === 0" class="empty">
+      No imports yet.
+    </div>
+
+    <table class="history-table" *ngIf="!historyLoading() && history().length > 0">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Imported By</th>
+          <th>Import Date</th>
+          <th>Records</th>
+          <th>Frauds</th>
+          <th>Failed Rows</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of history()">
+          <td>{{ log.filename }}</td>
+          <td>{{ log.imported_by_email }}</td>
+          <td>{{ log.created_at | date:'dd/MM/yy HH:mm' }}</td>
+          <td>{{ log.total_records }}</td>
+          <td>{{ log.frauds_detected }}</td>
+          <td>{{ log.errors }}</td>
+          <td>
+            <span class="status-badge" [class.status-badge--failed]="log.status !== 'completed'">
+              {{ log.status === 'completed' ? 'Completed' : 'Failed' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

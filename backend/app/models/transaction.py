@@ -10,4 +10,5 @@ class Transaction(Base):
     features = Column(String, nullable=False)  # JSON stringifié des V1-V28
     fraud_probability = Column(Float, nullable=False)
     is_fraud = Column(Boolean, default=False, index=True)
+    country = Column(String, default='Unknown')
     created_at = Column(DateTime(timezone=True), server_default=func.now())

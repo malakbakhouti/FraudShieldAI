@@ -45,6 +45,18 @@ export class TransactionService {
     return this.http.get<TransactionDetail>(`${this.apiUrl}/${id}`);
   }
 
+  getDailySummary() {
+    return this.http.get<{ day: string; frauds: number; total: number }[]>(`${this.apiUrl}/daily-summary`);
+  }
+
+  getTopCountries() {
+    return this.http.get<{ name: string; value: number }[]>(`${this.apiUrl}/analytics/top-countries`);
+  }
+
+  getRiskDistribution() {
+    return this.http.get<{ high: number; medium: number; low: number }>(`${this.apiUrl}/analytics/risk-distribution`);
+  }
+
   importCsv(file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -53,6 +65,33 @@ export class TransactionService {
       frauds_detected: number;
       errors: number;
       fraud_rate: number;
-    }>('http://localhost:8000/api/import/csv', formData);
+    }>('http://localhost:8000/api/import/csv', formData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('fraudshield_token')}` }
+    });
+  }
+
+  previewCsv(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{
+      columns: string[];
+      total_rows: number;
+      preview: Record<string, any>[];
+    }>('http://localhost:8000/api/import/preview', formData);
+  }
+
+  getImportHistory() {
+    return this.http.get<{
+      id: number;
+      filename: string;
+      imported_by_email: string;
+      total_records: number;
+      frauds_detected: number;
+      errors: number;
+      status: string;
+      created_at: string;
+    }[]>('http://localhost:8000/api/import/history', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('fraudshield_token')}` }
+    });
   }
 }
