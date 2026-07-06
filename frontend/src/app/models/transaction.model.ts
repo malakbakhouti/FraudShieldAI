@@ -6,8 +6,42 @@ export interface Transaction {
   created_at: string;
 }
 
+export interface ExplanationFactor {
+  factor_name: string;
+  score: number;
+  weight: number;
+  weighted_score: number;
+  confidence: number;
+  details: string;
+}
+
+export interface ExplanationSection {
+  score: number;
+  severity: 'low' | 'medium' | 'high';
+  factors: ExplanationFactor[];
+  details: string[];
+}
+
+export interface ExplanationReason {
+  title: string;
+  severity: 'low' | 'medium' | 'high';
+  score: number;
+  details: string;
+}
+
+export interface Explanation {
+  overall_risk: {
+    score: number;
+    severity: 'low' | 'medium' | 'high';
+  };
+  country: ExplanationSection;
+  reasons: ExplanationReason[];
+}
+
 export interface TransactionDetail extends Transaction {
+  country?: string;
   features: Record<string, number>;
+  explanation: Explanation | null;
 }
 
 export interface TransactionStats {

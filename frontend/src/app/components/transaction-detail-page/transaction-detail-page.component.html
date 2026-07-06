@@ -2,10 +2,7 @@
   <a routerLink="/app/transactions" class="back-link">← Back to Transactions</a>
 
   <div *ngIf="loading()" class="loading">Loading transaction...</div>
-
-  <div *ngIf="notFound()" class="empty">
-    Transaction not found.
-  </div>
+  <div *ngIf="notFound()" class="empty">Transaction not found.</div>
 
   <ng-container *ngIf="transaction() as tx">
     <div class="page__header">
@@ -13,7 +10,7 @@
         <h1>Transaction #{{ tx.id }}</h1>
         <p class="subtitle">{{ tx.created_at | date:'dd MMM yyyy, HH:mm:ss' }}</p>
       </div>
-      <span class="status-badge" [class.status-badge--fraud]="tx.is_fraud">
+      <span class="badge" [class.badge--high]="tx.is_fraud" [class.badge--low]="!tx.is_fraud">
         {{ tx.is_fraud ? 'Fraud Alert' : 'Approved' }}
       </span>
     </div>
@@ -21,66 +18,190 @@
     <div class="panels">
       <div class="panel">
         <div class="panel__title">Customer Information</div>
-        <div class="detail-row">
-          <span>Card Number</span>
-          <span>{{ cardMask }}</span>
-        </div>
-        <div class="detail-row">
-          <span>Country</span>
-          <span>{{ country }}</span>
-        </div>
+        <div class="detail-row"><span>Card Number</span><span>{{ cardMask }}</span></div>
+        <div class="detail-row"><span>Country</span><span>{{ tx.country || 'Unknown' }}</span></div>
       </div>
 
       <div class="panel">
         <div class="panel__title">Transaction Information</div>
-        <div class="detail-row">
-          <span>Amount</span>
-          <span>{{ tx.amount | number:'1.2-2' }} €</span>
-        </div>
-        <div class="detail-row">
-          <span>Date</span>
-          <span>{{ tx.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</span>
-        </div>
-        <div class="detail-row">
-          <span>Status</span>
-          <span>{{ tx.is_fraud ? 'Fraud Alert' : 'Approved' }}</span>
-        </div>
+        <div class="detail-row"><span>Amount</span><span>{{ tx.amount | number:'1.2-2' }} €</span></div>
+        <div class="detail-row"><span>Date</span><span>{{ tx.created_at | date:'dd/MM/yyyy HH:mm:ss' }}</span></div>
+        <div class="detail-row"><span>Status</span><span>{{ tx.is_fraud ? 'Fraud Alert' : 'Approved' }}</span></div>
       </div>
     </div>
 
     <div class="panel panel--full">
       <div class="panel__title">AI Prediction</div>
-      <div class="prediction-grid">
-        <div class="prediction-stat">
-          <span class="prediction-stat__label">Fraud Probability</span>
-          <span class="prediction-stat__value">{{ (tx.fraud_probability * 100) | number:'1.1-1' }}%</span>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-card__label">Fraud Probability</span>
+          <span class="kpi-card__value">{{ (tx.fraud_probability * 100) | number:'1.1-1' }}%</span>
         </div>
-        <div class="prediction-stat">
-          <span class="prediction-stat__label">Risk Level</span>
-          <span class="risk-pill" [class.risk-pill--high]="riskLevel(tx.fraud_probability) === 'high'"
-                                    [class.risk-pill--medium]="riskLevel(tx.fraud_probability) === 'medium'"
-                                    [class.risk-pill--low]="riskLevel(tx.fraud_probability) === 'low'">
+        <div class="kpi-card">
+          <span class="kpi-card__label">Risk Level</span>
+          <span class="badge" [class.badge--high]="riskLevel(tx.fraud_probability) === 'high'"
+                                [class.badge--medium]="riskLevel(tx.fraud_probability) === 'medium'"
+                                [class.badge--low]="riskLevel(tx.fraud_probability) === 'low'">
             {{ riskLevel(tx.fraud_probability) === 'high' ? 'High' : riskLevel(tx.fraud_probability) === 'medium' ? 'Medium' : 'Low' }}
           </span>
         </div>
-        <div class="prediction-stat">
-          <span class="prediction-stat__label">Model Decision</span>
-          <span class="prediction-stat__value">{{ tx.is_fraud ? 'Fraud' : 'Normal' }}</span>
+        <div class="kpi-card">
+          <span class="kpi-card__label">Model Decision</span>
+          <span class="kpi-card__value">{{ tx.is_fraud ? 'Fraud' : 'Normal' }}</span>
         </div>
       </div>
     </div>
 
-    <div class="panel panel--full" *ngIf="topFeatures.length > 0">
-      <div class="panel__title">Model Features (Top Contributors)</div>
-      <p class="panel__subtitle">
-        These anonymized PCA components had the strongest influence on this specific prediction.
-      </p>
-      <div class="feature-row" *ngFor="let f of topFeatures">
-        <span class="feature-row__name">{{ f.key }}</span>
-        <div class="feature-row__bar">
-          <div class="feature-row__fill" [style.width.%]="(f.value < 0 ? -f.value : f.value) * 20"></div>
+    <ng-container *ngIf="tx.explanation as exp">
+
+      <!-- Overall Risk — the visual focal point -->
+      <div class="panel panel--full risk-card" [class.risk-card--in]="animateIn()">
+        <div class="panel__title">Overall Risk</div>
+
+        <div class="risk-gauge">
+          <div class="risk-gauge__top">
+            <span class="risk-gauge__score">{{ exp.overall_risk.score }}<span class="risk-gauge__max"> / 100</span></span>
+            <span class="badge" [class.badge--high]="severityClass(exp.overall_risk.severity) === 'high'"
+                                  [class.badge--medium]="severityClass(exp.overall_risk.severity) === 'medium'"
+                                  [class.badge--low]="severityClass(exp.overall_risk.severity) === 'low'">
+              {{ exp.overall_risk.severity }}
+            </span>
+          </div>
+          <div class="risk-gauge__track">
+            <div class="risk-gauge__fill"
+                 [class.risk-gauge__fill--high]="severityClass(exp.overall_risk.severity) === 'high'"
+                 [class.risk-gauge__fill--medium]="severityClass(exp.overall_risk.severity) === 'medium'"
+                 [class.risk-gauge__fill--low]="severityClass(exp.overall_risk.severity) === 'low'"
+                 [style.width.%]="animateIn() ? exp.overall_risk.score : 0"></div>
+          </div>
+
+          <div class="confidence-bar confidence-bar--thin">
+            <div class="confidence-bar__label"><span>Confidence</span><span>{{ overallConfidence }}%</span></div>
+            <div class="confidence-bar__track">
+              <div class="confidence-bar__fill" [style.width.%]="animateIn() ? overallConfidence : 0"></div>
+            </div>
+          </div>
         </div>
-        <span class="feature-row__value">{{ f.value | number:'1.2-2' }}</span>
+      </div>
+
+      <!-- Country Analysis -->
+      <div class="panel panel--full fade-in" *ngIf="countryAnalysis as ca">
+        <div class="panel__title">Country Analysis</div>
+        <div class="analysis-grid">
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Country</span>
+            <span class="analysis-cell__value">{{ ca.country }}</span>
+          </div>
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Fraud Rate</span>
+            <span class="analysis-cell__value">{{ ca.fraudRate }}</span>
+          </div>
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Global Fraud Rate</span>
+            <span class="analysis-cell__value">{{ ca.globalRate }}</span>
+          </div>
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Relative Risk</span>
+            <span class="analysis-cell__value">{{ ca.relativeRisk }}</span>
+          </div>
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Historical Samples</span>
+            <span class="analysis-cell__value">{{ ca.sampleSize }}</span>
+          </div>
+          <div class="analysis-cell">
+            <span class="analysis-cell__label">Trend</span>
+            <span class="analysis-cell__value">{{ ca.trend }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Factors -->
+      <div class="panel panel--full fade-in">
+        <div class="panel__title">Risk Factors</div>
+        <div class="factor-grid">
+          <div class="factor-card" *ngFor="let factor of exp.country.factors">
+            <div class="factor-card__header">
+              <span class="factor-card__title">{{ factorDisplayName(factor.factor_name) }}</span>
+              <span class="badge" [class.badge--high]="scoreSeverity(factor.score) === 'high'"
+                                    [class.badge--medium]="scoreSeverity(factor.score) === 'medium'"
+                                    [class.badge--low]="scoreSeverity(factor.score) === 'low'">
+                {{ factor.score | number:'1.0-0' }}
+              </span>
+            </div>
+
+            <div class="mini-gauge__track">
+              <div class="mini-gauge__fill"
+                   [class.mini-gauge__fill--high]="scoreSeverity(factor.score) === 'high'"
+                   [class.mini-gauge__fill--medium]="scoreSeverity(factor.score) === 'medium'"
+                   [class.mini-gauge__fill--low]="scoreSeverity(factor.score) === 'low'"
+                   [style.width.%]="animateIn() ? factor.score : 0"></div>
+            </div>
+
+            <div class="factor-card__stats">
+              <div class="factor-card__stat"><span>Weight</span><span>{{ weightPercent(factor.weight) }}%</span></div>
+              <div class="factor-card__stat"><span>Contribution</span><span>{{ factor.weighted_score | number:'1.1-1' }} pts</span></div>
+            </div>
+
+            <div class="confidence-bar">
+              <div class="confidence-bar__label"><span>Confidence</span><span>{{ confidencePercent(factor.confidence) }}%</span></div>
+              <div class="confidence-bar__track">
+                <div class="confidence-bar__fill" [style.width.%]="animateIn() ? confidencePercent(factor.confidence) : 0"></div>
+              </div>
+            </div>
+
+            <p class="factor-card__details">{{ factor.details }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline — compact, GitHub-activity style -->
+      <div class="panel panel--full fade-in">
+        <div class="panel__title">AI Timeline</div>
+        <div class="timeline">
+          <div class="timeline__step" *ngFor="let step of timelineSteps; let last = last">
+            <div class="timeline__marker">
+              <span class="timeline__dot" [class.timeline__dot--final]="last"></span>
+              <span class="timeline__line" *ngIf="!last"></span>
+            </div>
+            <div class="timeline__content">
+              <span class="timeline__title">{{ step.title }}</span>
+              <span class="timeline__desc">{{ step.description }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Summary — plain professional paragraph -->
+      <div class="panel panel--full fade-in">
+        <div class="panel__title">AI Summary</div>
+        <p class="summary-text">{{ aiSummary }}</p>
+      </div>
+
+    </ng-container>
+
+    <!-- Model Features — SHAP-style diverging chart -->
+    <div class="panel panel--full" *ngIf="topFeatures.length > 0">
+      <div class="panel__title">Model Features</div>
+      <p class="panel__subtitle">Top PCA components influencing this specific prediction.</p>
+
+      <div class="shap-row" *ngFor="let f of topFeatures">
+        <span class="shap-row__name">{{ f.key }}</span>
+        <div class="shap-row__track">
+          <div class="shap-row__axis"></div>
+          <div class="shap-row__bar"
+               [class.shap-row__bar--positive]="f.positive"
+               [class.shap-row__bar--negative]="!f.positive"
+               [style.width.%]="animateIn() ? (f.abs / maxFeatureAbs) * 48 : 0"
+               [style.left]="f.positive ? '50%' : 'auto'"
+               [style.right]="!f.positive ? '50%' : 'auto'">
+          </div>
+        </div>
+        <span class="shap-row__value">{{ f.positive ? '+' : '−' }}{{ f.abs | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="shap-legend">
+        <span><i class="shap-legend__dot shap-legend__dot--positive"></i>Increases fraud likelihood</span>
+        <span><i class="shap-legend__dot shap-legend__dot--negative"></i>Decreases fraud likelihood</span>
       </div>
     </div>
   </ng-container>

@@ -49,6 +49,8 @@ def get_stats(db: Session = Depends(get_db)):
 
 @router.get("/{transaction_id}")
 def get_transaction_detail(transaction_id: int, db: Session = Depends(get_db)):
+    from app.services.explainer import generate_explanation
+
     tx = db.query(Transaction).filter(Transaction.id == transaction_id).first()
     if not tx:
         raise HTTPException(status_code=404, detail="Transaction not found")
@@ -58,13 +60,27 @@ def get_transaction_detail(transaction_id: int, db: Session = Depends(get_db)):
     except Exception:
         features = {}
 
+    transaction_payload = {
+        "amount": tx.amount,
+        "country": tx.country,
+        "fraud_probability": tx.fraud_probability,
+        "features": features,
+    }
+
+    try:
+        explanation = generate_explanation(transaction_payload, db)
+    except Exception:
+        explanation = None
+
     return {
         "id": tx.id,
         "amount": tx.amount,
+        "country": tx.country,
         "fraud_probability": tx.fraud_probability,
         "is_fraud": tx.is_fraud,
         "created_at": tx.created_at,
-        "features": features
+        "features": features,
+        "explanation": explanation
     }
 
 @router.get("/analytics/top-countries")
